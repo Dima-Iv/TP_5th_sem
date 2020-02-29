@@ -1,6 +1,7 @@
 package shape.polygon;
 
 import shape.base.TwoDFigure;
+import shape.interfaces.Methods;
 
 import java.awt.*;
 
@@ -9,7 +10,7 @@ import java.awt.*;
  * @version 1.0
  * @created 28-���-2020 18:39:58
  */
-public class Polygon extends TwoDFigure {
+public class Polygon extends TwoDFigure implements Methods {
 
     private Point[] points;
 
@@ -41,6 +42,9 @@ public class Polygon extends TwoDFigure {
 
     }
 
+    /**
+     * @param graphics2D
+     */
     @Override
     public void draw(Graphics2D graphics2D) {
 
@@ -56,6 +60,9 @@ public class Polygon extends TwoDFigure {
         return super.getCenter();
     }
 
+    /**
+     * @param value
+     */
     @Override
     public void setCenter(Point value) {
         super.setCenter(value);

@@ -21,15 +21,6 @@ public abstract class Figure {
         this.center = center;
     }
 
-    /**
-     * @param value
-     */
-    public abstract void move(Point value);
-
-    public abstract void draw(Graphics2D graphics2D);
-
-    public abstract Point location();
-
     public Point getCenter() {
         return center;
     }
