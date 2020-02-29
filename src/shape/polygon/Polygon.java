@@ -17,34 +17,47 @@ public class Polygon extends TwoDFigure {
 
     }
 
-    public void finalize() throws Throwable {
-        super.finalize();
-    }
-
-    public void draw() {
-
+    public Polygon(Color borderColor, Point center, Color bgColor, Point[] points) {
+        super(borderColor, center, bgColor);
+        this.points = points;
     }
 
     public Point[] getPoints() {
-        return null;
+        return points;
     }
 
-    public Point location() {
-        return null;
+    /**
+     * @param points
+     */
+    public void setPoints(Point[] points) {
+        this.points = points;
     }
 
     /**
      * @param value
      */
+    @Override
     public void move(Point value) {
 
     }
 
-    /**
-     * @param values
-     */
-    public void setPoints(Point[] values) {
+    @Override
+    public void draw(Graphics2D graphics2D) {
 
     }
 
+    @Override
+    public Point location() {
+        return null;
+    }
+
+    @Override
+    public Point getCenter() {
+        return super.getCenter();
+    }
+
+    @Override
+    public void setCenter(Point value) {
+        super.setCenter(value);
+    }
 }

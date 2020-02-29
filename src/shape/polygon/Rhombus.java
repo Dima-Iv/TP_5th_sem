@@ -13,26 +13,28 @@ public class Rhombus extends Polygon {
 
     }
 
-    public void finalize() throws Throwable {
-        super.finalize();
+    public Rhombus(Color borderColor, Point center, Color bgColor, Point[] points) {
+        super(borderColor, center, bgColor, points);
     }
 
     /**
      * @param value
      */
-    public void draw(Point value) {
-
-    }
-
-    public Point location() {
-        return null;
-    }
-
-    /**
-     * @param value
-     */
+    @Override
     public void move(Point value) {
-
+        super.move(value);
     }
 
+    /**
+     * @param graphics2D
+     */
+    @Override
+    public void draw(Graphics2D graphics2D) {
+        super.draw(graphics2D);
+    }
+
+    @Override
+    public Point location() {
+        return super.location();
+    }
 }
