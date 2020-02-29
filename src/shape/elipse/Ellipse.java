@@ -11,26 +11,26 @@ import java.awt.*;
  */
 public class Ellipse extends TwoDFigure {
 
-    private Point point;
+    private Point circlePoint;
 
     public Ellipse() {
 
     }
 
-    public void finalize() throws Throwable {
-        super.finalize();
+    public Ellipse(Color borderColor, Point center, Color bgColor, Point circlePoint) {
+        super(borderColor, center, bgColor);
+        this.circlePoint = circlePoint;
     }
 
-    public void draw() {
-
+    public Point getCirclePoint() {
+        return circlePoint;
     }
 
-    public Point getPoint() {
-        return null;
-    }
-
-    public Point location() {
-        return null;
+    /**
+     * @param circlePoint
+     */
+    public void setCirclePoint(Point circlePoint) {
+        this.circlePoint = circlePoint;
     }
 
     @Override
@@ -38,11 +38,13 @@ public class Ellipse extends TwoDFigure {
 
     }
 
-    /**
-     * @param point
-     */
-    public void setPoint(Point point) {
+    @Override
+    public void draw(Graphics2D graphics2D) {
 
     }
 
+    @Override
+    public Point location() {
+        return null;
+    }
 }

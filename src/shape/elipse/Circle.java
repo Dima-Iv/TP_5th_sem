@@ -13,38 +13,42 @@ public class Circle extends Ellipse {
 
     }
 
-    public void finalize() throws Throwable {
-        super.finalize();
+    public Circle(Color borderColor, Point center, Color bgColor, Point circlePoint) {
+        super(borderColor, center, bgColor, circlePoint);
     }
 
-    public void draw() {
-
+    @Override
+    public void move(Point value) {
+        super.move(value);
     }
 
-    public Point getCenter() {
-        return null;
+    @Override
+    public void draw(Graphics2D graphics2D) {
+        super.draw(graphics2D);
     }
 
-    public Point getPoint() {
-        return null;
-    }
-
+    @Override
     public Point location() {
-        return null;
+        return super.location();
     }
 
-    /**
-     * @param value
-     */
+    @Override
+    public Point getCenter() {
+        return super.getCenter();
+    }
+
+    @Override
     public void setCenter(Point value) {
-
+        super.setCenter(value);
     }
 
-    /**
-     * @param point
-     */
-    public void setPoint(Point point) {
-
+    @Override
+    public Point getCirclePoint() {
+        return super.getCirclePoint();
     }
 
+    @Override
+    public void setCirclePoint(Point circlePoint) {
+        super.setCirclePoint(circlePoint);
+    }
 }

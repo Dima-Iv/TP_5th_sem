@@ -17,34 +17,40 @@ public class RegularPolygon extends TwoDFigure {
 
     }
 
-    public void finalize() throws Throwable {
-        super.finalize();
-    }
-
-    public void draw() {
-
+    public RegularPolygon(Color borderColor, Point center, Color bgColor, int pointCount) {
+        super(borderColor, center, bgColor);
+        this.pointCount = pointCount;
     }
 
     public int getPointCount() {
-        return 0;
+        return pointCount;
     }
 
-    public Point location() {
-        return null;
+    /**
+     * @param pointCount
+     */
+    public void setPointCount(int pointCount) {
+        this.pointCount = pointCount;
     }
 
     /**
      * @param value
      */
+    @Override
     public void move(Point value) {
 
     }
 
     /**
-     * @param value
+     * @param graphics2D
      */
-    public void setPointCount(int value) {
+    @Override
+    public void draw(Graphics2D graphics2D) {
 
     }
 
+    @Override
+    public Point location() {
+        return null;
+    }
 }

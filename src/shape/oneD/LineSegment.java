@@ -21,6 +21,14 @@ public class LineSegment extends Figure {
         this.endPoint = endPoint;
     }
 
+    public Point getEndPoint() {
+        return endPoint;
+    }
+
+    public void setEndPoint(Point endPoint) {
+        this.endPoint = endPoint;
+    }
+
     /**
      * @param value
      */
