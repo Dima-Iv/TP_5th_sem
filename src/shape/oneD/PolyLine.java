@@ -1,6 +1,7 @@
 package shape.oneD;
 
 import shape.base.Figure;
+import shape.interfaces.Methods;
 
 import java.awt.*;
 
@@ -9,7 +10,7 @@ import java.awt.*;
  * @version 1.0
  * @created 28-���-2020 18:39:58
  */
-public class PolyLine extends Figure {
+public class PolyLine extends Figure implements Methods {
 
     public LineSegment[] lineSegments;
 
@@ -22,23 +23,6 @@ public class PolyLine extends Figure {
         this.lineSegments = lineSegments;
     }
 
-    /**
-     * @param value
-     */
-    public void move(Point value) {
-
-    }
-
-    @Override
-    public void draw(Graphics2D graphics2D) {
-
-    }
-
-    @Override
-    public Point location() {
-        return null;
-    }
-
     public LineSegment[] getLineSegments() {
         return lineSegments;
     }
@@ -48,5 +32,25 @@ public class PolyLine extends Figure {
      */
     public void setLineSegments(LineSegment[] values) {
         this.lineSegments = values;
+    }
+
+    /**
+     * @param value
+     */
+    public void move(Point value) {
+
+    }
+
+    /**
+     * @param graphics2D
+     */
+    @Override
+    public void draw(Graphics2D graphics2D) {
+
+    }
+
+    @Override
+    public Point location() {
+        return null;
     }
 }

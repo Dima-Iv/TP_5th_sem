@@ -1,6 +1,7 @@
 package shape.oneD;
 
 import shape.base.Figure;
+import shape.interfaces.Methods;
 
 import java.awt.*;
 
@@ -9,7 +10,7 @@ import java.awt.*;
  * @version 1.0
  * @created 28-���-2020 18:39:58
  */
-public class LineSegment extends Figure {
+public class LineSegment extends Figure implements Methods {
     private Point endPoint;
 
     public LineSegment() {
@@ -25,6 +26,9 @@ public class LineSegment extends Figure {
         return endPoint;
     }
 
+    /**
+     * @param endPoint
+     */
     public void setEndPoint(Point endPoint) {
         this.endPoint = endPoint;
     }
@@ -37,6 +41,9 @@ public class LineSegment extends Figure {
 
     }
 
+    /**
+     * @param graphics2D
+     */
     @Override
     public void draw(Graphics2D graphics2D) {
 

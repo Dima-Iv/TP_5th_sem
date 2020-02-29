@@ -25,6 +25,9 @@ public class Ray extends LineSegment {
         super.move(value);
     }
 
+    /**
+     * @param graphics2D
+     */
     @Override
     public void draw(Graphics2D graphics2D) {
         super.draw(graphics2D);
