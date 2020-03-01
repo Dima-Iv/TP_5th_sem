@@ -1,6 +1,10 @@
 package shape.elipse;
 
+import javafx.scene.canvas.GraphicsContext;
+
 import java.awt.*;
+
+import static java.lang.Math.abs;
 
 /**
  * @author Dima
@@ -22,15 +26,26 @@ public class Circle extends Ellipse {
      */
     @Override
     public void move(Point value) {
-        super.move(value);
+        Point centerPoint = getCenter();
+        Point borderPoint = getBorderPoint();
+        borderPoint.translate(value.x - centerPoint.x, value.y - centerPoint.y);
+        setCenter(value);
     }
 
     /**
-     * @param graphics2D
+     * @param graphicsContext
      */
     @Override
-    public void draw(Graphics2D graphics2D) {
-        super.draw(graphics2D);
+    public void draw(GraphicsContext graphicsContext) {
+        Point borderPoint = getBorderPoint();
+        Point centerPoint = getCenter();
+        int width = 2 * (int)abs(borderPoint.distance(centerPoint));
+        int topCornerPointX = centerPoint.x - width / 2;
+        int topCornerPointY = centerPoint.y - width / 2;
+        graphicsContext.setStroke(javafx.scene.paint.Color.BLACK);
+        graphicsContext.strokeOval(topCornerPointX, topCornerPointY, width, width);
+        graphicsContext.setFill(javafx.scene.paint.Color.WHITE);
+        graphicsContext.fillOval(topCornerPointX, topCornerPointY, width, width);
     }
 
     @Override
@@ -52,15 +67,15 @@ public class Circle extends Ellipse {
     }
 
     @Override
-    public Point getCirclePoint() {
-        return super.getCirclePoint();
+    public Point getBorderPoint() {
+        return super.getBorderPoint();
     }
 
     /**
-     * @param circlePoint
+     * @param borderPoint
      */
     @Override
-    public void setCirclePoint(Point circlePoint) {
-        super.setCirclePoint(circlePoint);
+    public void setBorderPoint(Point borderPoint) {
+        super.setBorderPoint(borderPoint);
     }
 }

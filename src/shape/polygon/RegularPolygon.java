@@ -1,5 +1,6 @@
 package shape.polygon;
 
+import javafx.scene.canvas.GraphicsContext;
 import shape.base.TwoDFigure;
 import shape.interfaces.Methods;
 
@@ -43,10 +44,10 @@ public class RegularPolygon extends TwoDFigure implements Methods {
     }
 
     /**
-     * @param graphics2D
+     * @param graphicsContext
      */
     @Override
-    public void draw(Graphics2D graphics2D) {
+    public void draw(GraphicsContext graphicsContext) {
 
     }
 

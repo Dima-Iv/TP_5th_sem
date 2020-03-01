@@ -1,5 +1,6 @@
 package shape.oneD;
 
+import javafx.scene.canvas.GraphicsContext;
 import shape.base.Figure;
 import shape.interfaces.Methods;
 
@@ -42,10 +43,10 @@ public class LineSegment extends Figure implements Methods {
     }
 
     /**
-     * @param graphics2D
+     * @param graphicsContext
      */
     @Override
-    public void draw(Graphics2D graphics2D) {
+    public void draw(GraphicsContext graphicsContext) {
 
     }
 

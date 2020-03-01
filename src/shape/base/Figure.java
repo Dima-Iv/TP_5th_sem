@@ -29,7 +29,7 @@ public abstract class Figure {
      * @param value
      */
     public void setCenter(Point value) {
-
+        center = value;
     }
 
     public Color getBorderColor() {

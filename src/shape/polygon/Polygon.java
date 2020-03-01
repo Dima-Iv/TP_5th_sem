@@ -1,5 +1,6 @@
 package shape.polygon;
 
+import javafx.scene.canvas.GraphicsContext;
 import shape.base.TwoDFigure;
 import shape.interfaces.Methods;
 
@@ -12,6 +13,7 @@ import java.awt.*;
  */
 public class Polygon extends TwoDFigure implements Methods {
 
+    private int nPoint;
     private Point[] points;
 
     public Polygon() {
@@ -43,10 +45,10 @@ public class Polygon extends TwoDFigure implements Methods {
     }
 
     /**
-     * @param graphics2D
+     * @param graphicsContext
      */
     @Override
-    public void draw(Graphics2D graphics2D) {
+    public void draw(GraphicsContext graphicsContext) {
 
     }
 
