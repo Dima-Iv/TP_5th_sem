@@ -1,6 +1,7 @@
 package shape.elipse;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 import java.awt.*;
 
@@ -17,7 +18,7 @@ public class Circle extends Ellipse {
 
     }
 
-    public Circle(Color borderColor, Point center, Color bgColor, Point circlePoint) {
+    public Circle(Color borderColor, Point center, javafx.scene.paint.Color bgColor, Point circlePoint) {
         super(borderColor, center, bgColor, circlePoint);
     }
 
@@ -42,9 +43,9 @@ public class Circle extends Ellipse {
         int width = 2 * (int)abs(borderPoint.distance(centerPoint));
         int topCornerPointX = centerPoint.x - width / 2;
         int topCornerPointY = centerPoint.y - width / 2;
-        graphicsContext.setStroke(javafx.scene.paint.Color.BLACK);
+        graphicsContext.setStroke(getBorderColor());
         graphicsContext.strokeOval(topCornerPointX, topCornerPointY, width, width);
-        graphicsContext.setFill(javafx.scene.paint.Color.WHITE);
+        graphicsContext.setFill(getBGColor());
         graphicsContext.fillOval(topCornerPointX, topCornerPointY, width, width);
     }
 

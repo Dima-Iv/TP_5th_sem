@@ -1,6 +1,7 @@
 package shape.polygon;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import shape.base.TwoDFigure;
 import shape.interfaces.Methods;
 
@@ -19,7 +20,7 @@ public class RegularPolygon extends TwoDFigure implements Methods {
 
     }
 
-    public RegularPolygon(Color borderColor, Point center, Color bgColor, int pointCount) {
+    public RegularPolygon(javafx.scene.paint.Color borderColor, Point center, Color bgColor, int pointCount) {
         super(borderColor, center, bgColor);
         this.pointCount = pointCount;
     }

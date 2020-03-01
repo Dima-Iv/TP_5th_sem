@@ -1,5 +1,7 @@
 package shape.base;
 
+import javafx.scene.paint.Color;
+
 import java.awt.*;
 
 /**
@@ -9,14 +11,14 @@ import java.awt.*;
  */
 public abstract class Figure {
 
-    private Color borderColor = Color.BLACK;
+    private javafx.scene.paint.Color borderColor;
     private Point center;
 
     public Figure() {
 
     }
 
-    public Figure(Color borderColor, Point center) {
+    public Figure(javafx.scene.paint.Color borderColor, Point center) {
         this.borderColor = borderColor;
         this.center = center;
     }

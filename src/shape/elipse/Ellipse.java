@@ -1,6 +1,7 @@
 package shape.elipse;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import shape.base.TwoDFigure;
 import shape.interfaces.Methods;
 
@@ -21,7 +22,7 @@ public class Ellipse extends TwoDFigure implements Methods {
 
     }
 
-    public Ellipse(Color borderColor, Point center, Color bgColor, Point borderPoint) {
+    public Ellipse(javafx.scene.paint.Color borderColor, Point center, Color bgColor, Point borderPoint) {
         super(borderColor, center, bgColor);
         this.borderPoint = borderPoint;
     }
@@ -59,8 +60,8 @@ public class Ellipse extends TwoDFigure implements Methods {
         Point topCornerPoint = getCenter();
         int width = abs(bottomCornerPoint.x - topCornerPoint.x);
         int height = abs(bottomCornerPoint.y - topCornerPoint.y);
-        graphicsContext.setStroke(javafx.scene.paint.Color.BLACK);
-        graphicsContext.setFill(javafx.scene.paint.Color.WHITE);
+        graphicsContext.setStroke(getBorderColor());
+        graphicsContext.setFill(getBGColor());
         if(topCornerPoint.x > bottomCornerPoint.x && topCornerPoint.y > bottomCornerPoint.y) {
             graphicsContext.strokeOval(bottomCornerPoint.x, bottomCornerPoint.y, width, height);
             graphicsContext.fillOval(bottomCornerPoint.x, bottomCornerPoint.y, width, height);

@@ -1,6 +1,7 @@
 package shape.polygon;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 import java.awt.*;
 
@@ -15,7 +16,7 @@ public class Triangle extends Polygon {
 
     }
 
-    public Triangle(Color borderColor, Point center, Color bgColor, Point[] points) {
+    public Triangle(javafx.scene.paint.Color borderColor, Point center, Color bgColor, Point[] points) {
         super(borderColor, center, bgColor, points);
     }
 
