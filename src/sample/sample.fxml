@@ -1,17 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ColorPicker?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="490.0" prefWidth="728.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="592.0" prefWidth="939.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
-      <Canvas fx:id="canvas" height="490.0" layoutX="149.0" width="579.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="149.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <ListView id="listView" fx:id="listView" layoutY="284.0" prefHeight="205.0" prefWidth="150.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="578.0" AnchorPane.topAnchor="284.0" />
-      <ColorPicker fx:id="colorPicker" layoutY="253.0" prefHeight="31.0" prefWidth="150.0" AnchorPane.bottomAnchor="206.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="578.0" AnchorPane.topAnchor="253.0" />
-      <ComboBox fx:id="comboBox" layoutY="222.0" prefWidth="150.0" promptText="Shapes" AnchorPane.bottomAnchor="237.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="578.0" AnchorPane.topAnchor="222.0" />
+      <Canvas fx:id="canvas" height="592.0" layoutX="158.0" layoutY="1.0" width="784.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="158.0" AnchorPane.rightAnchor="-3.0" AnchorPane.topAnchor="1.0" />
+      <ColorPicker fx:id="backgroundColorPicker" layoutY="158.0" prefHeight="31.0" prefWidth="150.0" promptText="Border color" AnchorPane.bottomAnchor="403.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="789.0" AnchorPane.topAnchor="158.0" />
+      <Button fx:id="buttonNumberPoints" layoutY="82.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="150.0" text="Input" AnchorPane.bottomAnchor="479.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="789.0" AnchorPane.topAnchor="82.0" />
+      <Text layoutX="17.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Background color" AnchorPane.bottomAnchor="451.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="805.27392578125" AnchorPane.topAnchor="120.0" />
+      <Text layoutX="17.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Border color" AnchorPane.bottomAnchor="368.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="840.0419921875" AnchorPane.topAnchor="203.0" />
+      <ColorPicker fx:id="borderColorPicker" layoutY="234.0" prefHeight="31.0" prefWidth="150.0" AnchorPane.bottomAnchor="327.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="789.0" AnchorPane.topAnchor="234.0" />
+      <Text fx:id="Figure" layoutX="17.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Figure" AnchorPane.bottomAnchor="296.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="880.662109375" AnchorPane.topAnchor="275.0" />
+      <RadioButton fx:id="radioButtonSegment" layoutX="12.0" layoutY="309.0" mnemonicParsing="false" text="Segment" AnchorPane.bottomAnchor="262.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="841.0" AnchorPane.topAnchor="309.0" />
+      <RadioButton fx:id="radioButtonRay" layoutX="12.0" layoutY="340.0" mnemonicParsing="false" text="Ray" AnchorPane.bottomAnchor="231.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="841.0" AnchorPane.topAnchor="340.0" />
+      <RadioButton fx:id="radioButtonLine" layoutX="12.0" layoutY="373.0" mnemonicParsing="false" text="Line" AnchorPane.bottomAnchor="198.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="841.0" AnchorPane.topAnchor="373.0" />
+      <RadioButton fx:id="radioButtonPolyLine" layoutX="14.0" layoutY="401.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="106.0" text="Poly Line" AnchorPane.bottomAnchor="170.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="819.0" AnchorPane.topAnchor="401.0" />
+      <RadioButton fx:id="radioButtonAsymmetricShape" layoutX="12.0" layoutY="431.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="150.0" text="Asymmetric Shape" AnchorPane.bottomAnchor="140.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="777.0" AnchorPane.topAnchor="431.0" />
+      <RadioButton fx:id="radioButtonRegularShape" layoutX="12.0" layoutY="460.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="157.0" text="Regular Shape" AnchorPane.bottomAnchor="111.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="770.0" AnchorPane.topAnchor="460.0" />
+      <RadioButton fx:id="radioButtonSymmetricShape" layoutX="12.0" layoutY="487.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="150.0" text="Symmetric Shape" AnchorPane.bottomAnchor="84.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="777.0" AnchorPane.topAnchor="487.0" />
+      <RadioButton fx:id="radioButtonCircle" layoutX="12.0" layoutY="515.0" mnemonicParsing="false" text="Circle" AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="841.0" AnchorPane.topAnchor="515.0" />
+      <RadioButton fx:id="radioButtonEllipse" layoutX="12.0" layoutY="547.0" mnemonicParsing="false" text="Ellipse" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="841.0" AnchorPane.topAnchor="547.0" />
+      <TextField fx:id="numberPointsTextField" layoutY="45.0" prefHeight="31.0" prefWidth="150.0" />
+      <Text layoutX="17.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Number points" />
    </children>
 </AnchorPane>
