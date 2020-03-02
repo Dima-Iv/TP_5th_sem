@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -7,10 +9,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
+import shape.base.Figure;
 import shape.elipse.Circle;
 import shape.elipse.Ellipse;
-import shape.polygon.Polygon;
-import shape.polygon.Rectangle;
+import shape.oneD.Line;
+import shape.oneD.LineSegment;
+import shape.oneD.Ray;
 import shape.polygon.RegularPolygon;
 import shape.polygon.Rhombus;
 
@@ -61,11 +65,32 @@ public class Controller {
 
     @FXML
     private TextField numberPointsTextField;
+    @FXML
+    private RadioButton radioButtonRhombus;
 
     private double brushSize = 1;
+    private int n;
+    private List<Figure> figures;
+    private Figure figure;
+    private static final String SEGMENT = "segment";
+    private static final String RAY = "ray";
+    private static final String LINE = "line";
+    private static final String POLYLINE = "polyline";
+    private static final String ASYMMETRIC_SHAPE = "asymmetricShape";
+    private static final String SYMMETRIC_SHAPE = "symmetricShape";
+    private static final String REGULAR_SHAPE = "regularShape";
+    private static final String CIRCLE = "circle";
+    private static final String ELLIPSE = "ellipse";
+    private static final String RHOMBUS = "rhombus";
+    private static final String TRIANGLE = "triangle";
+    private String figureName;
+    private Point startPoint;
+    private Point endPoint;
+    private GraphicsContext graphicsContext;
 
     @FXML
     public void initialize() {
+        figures = new ArrayList<>();
         initializeRadioButtons();
         initializeCanvas();
         initializeButton();
@@ -74,55 +99,54 @@ public class Controller {
     public void initializeRadioButtons() {
         ToggleGroup toggleGroup = new ToggleGroup();
         radioButtonSegment.setToggleGroup(toggleGroup);
+        radioButtonSegment.setUserData(SEGMENT);
         radioButtonSegment.setSelected(true);
         radioButtonRay.setToggleGroup(toggleGroup);
+        radioButtonRay.setUserData(RAY);
         radioButtonLine.setToggleGroup(toggleGroup);
+        radioButtonLine.setUserData(LINE);
         radioButtonPolyLine.setToggleGroup(toggleGroup);
+        radioButtonPolyLine.setUserData(POLYLINE);
         radioButtonAsymmetricShape.setToggleGroup(toggleGroup);
+        radioButtonAsymmetricShape.setUserData(ASYMMETRIC_SHAPE);
         radioButtonRegularShape.setToggleGroup(toggleGroup);
+        radioButtonRegularShape.setUserData(REGULAR_SHAPE);
         radioButtonSymmetricShape.setToggleGroup(toggleGroup);
+        radioButtonSymmetricShape.setUserData(SYMMETRIC_SHAPE);
         radioButtonCircle.setToggleGroup(toggleGroup);
+        radioButtonCircle.setUserData(CIRCLE);
         radioButtonEllipse.setToggleGroup(toggleGroup);
+        radioButtonEllipse.setUserData(ELLIPSE);
+        radioButtonRhombus.setToggleGroup(toggleGroup);
+        radioButtonRhombus.setUserData(RHOMBUS);
+        toggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            public void changed(ObservableValue<? extends Toggle> ov,
+                                Toggle old_toggle, Toggle new_toggle) {
+                if (toggleGroup.getSelectedToggle() != null) {
+                    figureName = (String) toggleGroup.getSelectedToggle().getUserData();
+                }
+            }
+        });
     }
 
     public void initializeCanvas() {
-        GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
-
-        /*List<Point> pointList = new ArrayList<>();
-
-        canvas.setOnMouseClicked(mouseEvent -> {
-            pointList.add(new Point((int)mouseEvent.getX(), (int)mouseEvent.getY()));
-            Polygon polygon = new Polygon(borderColorPicker.getValue(), backgroundColorPicker.getValue(),
-                    pointList);
-            polygon.draw(graphicsContext);
-        });*/
-
-        Point startPoint = new Point();
-
+        graphicsContext = canvas.getGraphicsContext2D();
+        startPoint = new Point();
+        endPoint = new Point();
         canvas.setOnMousePressed(mouseEvent -> {
             startPoint.setLocation(mouseEvent.getX(), mouseEvent.getY());
         });
 
-        canvas.setOnMouseDragged(mouseEvent -> {
-            graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-            Rhombus ellipse = new Rhombus(borderColorPicker.getValue(), startPoint,
-                    backgroundColorPicker.getValue(), new Point((int)mouseEvent.getX(), (int)mouseEvent.getY()));
-            ellipse.draw(graphicsContext);
-        });
-
         canvas.setOnMouseReleased(mouseEvent -> {
-            graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-            Rhombus ellipse = new Rhombus(borderColorPicker.getValue(), startPoint,
-                    backgroundColorPicker.getValue(), new Point((int)mouseEvent.getX(), (int)mouseEvent.getY()));
-            ellipse.draw(graphicsContext);
+            endPoint.setLocation(mouseEvent.getX(), mouseEvent.getY());
+            drawFigure();
         });
     }
 
     public void initializeButton() {
         buttonNumberPoints.setOnAction(event -> {
             try {
-                int numberPoints = Integer.parseInt(numberPointsTextField.getText());
-                //TODO
+                n = Integer.parseInt(numberPointsTextField.getText());
             } catch (NumberFormatException e) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setContentText("Please, input correct value");
@@ -131,22 +155,63 @@ public class Controller {
         });
     }
 
-    private void drawShapes(GraphicsContext graphicsContext, Canvas canvas) {
-        Point startPoint = new Point();
-        Point endPoint = new Point();
-        canvas.setOnMousePressed(mouseEvent -> {
-            int startPointX = (int) mouseEvent.getX();
-            int startPointY = (int) mouseEvent.getY();
-            startPoint.setLocation(new Point(startPointX, startPointY));
-        });
-
-        canvas.setOnMouseReleased(mouseEvent -> {
-            int endPointX = (int) mouseEvent.getX();
-            int endPointY = (int) mouseEvent.getY();
-            endPoint.setLocation(new Point(endPointX, endPointY));
-        });
-
-        Ellipse ellipse = new Ellipse(Color.BLACK, startPoint, Color.WHITE, endPoint);
-        ellipse.draw(graphicsContext);
+    public void drawFigure() {
+        Color backgroundColor = backgroundColorPicker.getValue();
+        Color borderColor = borderColorPicker.getValue();
+        switch (figureName) {
+            case SEGMENT: {
+                LineSegment lineSegment = new LineSegment(borderColor, startPoint, endPoint);
+                lineSegment.draw(graphicsContext);
+                figures.add(lineSegment);
+            }
+            case RAY: {
+                Ray ray = new Ray(borderColor, startPoint, endPoint);
+                ray.draw(graphicsContext);
+                figures.add(ray);
+            }
+            case LINE: {
+                Line line = new Line(borderColor, startPoint, endPoint);
+                line.draw(graphicsContext);
+                figures.add(line);
+            }
+            case POLYLINE: {
+                //todo
+//                PolyLine polyLine = new PolyLine(borderColor, startPoint, endPoint);
+//                polyLine.draw(graphicsContext);
+                //figures.add(polyLine);
+            }
+            case ASYMMETRIC_SHAPE: {
+                //todo
+            }
+            case REGULAR_SHAPE: {
+                RegularPolygon lineSegment = new RegularPolygon(borderColor, startPoint, endPoint, backgroundColor, n);
+                lineSegment.draw(graphicsContext);
+                figures.add(lineSegment);
+            }
+            case SYMMETRIC_SHAPE: {
+                //todo
+            }
+            case CIRCLE: {
+                Circle circle = new Circle(borderColor, startPoint, backgroundColor, endPoint);
+                circle.draw(graphicsContext);
+                figures.add(circle);
+            }
+            case ELLIPSE: {
+                Ellipse ellipse = new Ellipse(borderColor, startPoint, backgroundColor, endPoint);
+                ellipse.draw(graphicsContext);
+                figures.add(ellipse);
+            }
+            case RHOMBUS: {
+                Rhombus rhombus = new Rhombus(borderColor, startPoint, backgroundColor, endPoint);
+                rhombus.draw(graphicsContext);
+                figures.add(rhombus);
+            }
+            case TRIANGLE: {
+                //todo
+//                Triangle triangle = new Triangle(borderColor, startPoint, backgroundColor, endPoint);
+//                triangle.draw(graphicsContext);
+                //figures.add(triangle);
+            }
+        }
     }
 }
