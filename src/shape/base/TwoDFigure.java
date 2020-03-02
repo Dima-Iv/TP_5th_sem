@@ -11,18 +11,23 @@ import java.awt.*;
  */
 public abstract class TwoDFigure extends Figure {
 
-    private javafx.scene.paint.Color bgColor;
+    private Color bgColor;
 
     public TwoDFigure() {
 
     }
 
-    public TwoDFigure(javafx.scene.paint.Color borderColor, Point center, javafx.scene.paint.Color bgColor) {
+    public TwoDFigure(Color borderColor, Point center, Color bgColor) {
         super(borderColor, center);
         this.bgColor = bgColor;
     }
 
-    public javafx.scene.paint.Paint getBGColor() {
+    public TwoDFigure(Color borderColor, Color bgColor) {
+        super(borderColor);
+        this.bgColor = bgColor;
+    }
+
+    public Color getBGColor() {
         return bgColor;
     }
 

@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 import java.awt.*;
+import java.util.List;
 
 /**
  * @author Dima
@@ -16,7 +17,7 @@ public class Triangle extends Polygon {
 
     }
 
-    public Triangle(javafx.scene.paint.Color borderColor, Point center, Color bgColor, Point[] points) {
+    public Triangle(Color borderColor, Point center, Color bgColor, List<Point> points) {
         super(borderColor, center, bgColor, points);
     }
 

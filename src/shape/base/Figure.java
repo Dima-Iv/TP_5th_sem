@@ -11,14 +11,18 @@ import java.awt.*;
  */
 public abstract class Figure {
 
-    private javafx.scene.paint.Color borderColor;
+    private Color borderColor;
     private Point center;
 
     public Figure() {
 
     }
 
-    public Figure(javafx.scene.paint.Color borderColor, Point center) {
+    public Figure(Color borderColor) {
+        this.borderColor = borderColor;
+    }
+
+    public Figure(Color borderColor, Point center) {
         this.borderColor = borderColor;
         this.center = center;
     }

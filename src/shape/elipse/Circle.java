@@ -1,11 +1,11 @@
 package shape.elipse;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 import java.awt.*;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.min;
 
 /**
  * @author Dima
@@ -18,25 +18,21 @@ public class Circle extends Ellipse {
 
     }
 
-    public Circle(Color borderColor, Point center, javafx.scene.paint.Color bgColor, Point circlePoint) {
-        super(borderColor, center, bgColor, circlePoint);
+    public Circle(Color borderColor, Point center, Color bgColor, Point borderPoint) {
+        super(borderColor, center, bgColor, borderPoint);
+        int width = abs(borderPoint.x - center.x);
+        int height = abs(borderPoint.y - center.y);
+        int min = min(width, height);
+        borderPoint.setLocation(center.x + min, center.y + min);
+        this.setBorderColor(borderColor);
+        this.setCenter(center);
+        this.setBGColor(bgColor);
     }
 
-    /**
-     * @param value
-     */
-    @Override
-    public void move(Point value) {
-        Point centerPoint = getCenter();
-        Point borderPoint = getBorderPoint();
-        borderPoint.translate(value.x - centerPoint.x, value.y - centerPoint.y);
-        setCenter(value);
-    }
-
-    /**
-     * @param graphicsContext
-     */
-    @Override
+    //**
+    // * @param graphicsContext
+    // */
+    /*@Override
     public void draw(GraphicsContext graphicsContext) {
         Point borderPoint = getBorderPoint();
         Point centerPoint = getCenter();
@@ -47,7 +43,7 @@ public class Circle extends Ellipse {
         graphicsContext.strokeOval(topCornerPointX, topCornerPointY, width, width);
         graphicsContext.setFill(getBGColor());
         graphicsContext.fillOval(topCornerPointX, topCornerPointY, width, width);
-    }
+    }*/
 
     @Override
     public Point location() {

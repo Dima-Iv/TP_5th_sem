@@ -22,7 +22,7 @@ public class Ellipse extends TwoDFigure implements Methods {
 
     }
 
-    public Ellipse(javafx.scene.paint.Color borderColor, Point center, Color bgColor, Point borderPoint) {
+    public Ellipse(Color borderColor, Point center, Color bgColor, Point borderPoint) {
         super(borderColor, center, bgColor);
         this.borderPoint = borderPoint;
     }
@@ -55,29 +55,16 @@ public class Ellipse extends TwoDFigure implements Methods {
      */
     @Override
     public void draw(GraphicsContext graphicsContext) {
-        graphicsContext.setLineWidth(2);
-        Point bottomCornerPoint = borderPoint;
-        Point topCornerPoint = getCenter();
-        int width = abs(bottomCornerPoint.x - topCornerPoint.x);
-        int height = abs(bottomCornerPoint.y - topCornerPoint.y);
+        Point borderPoint = getBorderPoint();
+        Point centerPoint = getCenter();
+        int width = abs(borderPoint.x - centerPoint.x);
+        int height = abs(borderPoint.y - centerPoint.y);
+        int topCornerPointX = centerPoint.x - width;
+        int topCornerPointY = centerPoint.y - height;
         graphicsContext.setStroke(getBorderColor());
+        graphicsContext.strokeOval(topCornerPointX, topCornerPointY, 2 * width, 2 * height);
         graphicsContext.setFill(getBGColor());
-        if(topCornerPoint.x > bottomCornerPoint.x && topCornerPoint.y > bottomCornerPoint.y) {
-            graphicsContext.strokeOval(bottomCornerPoint.x, bottomCornerPoint.y, width, height);
-            graphicsContext.fillOval(bottomCornerPoint.x, bottomCornerPoint.y, width, height);
-        }
-        if(topCornerPoint.x < bottomCornerPoint.x && topCornerPoint.y < bottomCornerPoint.y){
-            graphicsContext.strokeOval(topCornerPoint.x, topCornerPoint.y, width, height);
-            graphicsContext.fillOval(topCornerPoint.x, topCornerPoint.y, width, height);
-        }
-        if(topCornerPoint.x > bottomCornerPoint.x && topCornerPoint.y < bottomCornerPoint.y){
-            graphicsContext.strokeOval(bottomCornerPoint.x, topCornerPoint.y, width, height);
-            graphicsContext.fillOval(bottomCornerPoint.x, topCornerPoint.y, width, height);
-        }
-        if(topCornerPoint.x < bottomCornerPoint.x && topCornerPoint.y > bottomCornerPoint.y){
-            graphicsContext.strokeOval(topCornerPoint.x, bottomCornerPoint.y, width, height);
-            graphicsContext.fillOval(topCornerPoint.x, bottomCornerPoint.y, width, height);
-        }
+        graphicsContext.fillOval(topCornerPointX, topCornerPointY, 2 * width, 2 * height);
     }
 
     @Override

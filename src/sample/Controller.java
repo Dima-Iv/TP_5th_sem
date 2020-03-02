@@ -7,9 +7,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
+import shape.elipse.Circle;
 import shape.elipse.Ellipse;
+import shape.polygon.Polygon;
+import shape.polygon.Rectangle;
+import shape.polygon.RegularPolygon;
+import shape.polygon.Rhombus;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
 
@@ -81,6 +88,15 @@ public class Controller {
     public void initializeCanvas() {
         GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
 
+        /*List<Point> pointList = new ArrayList<>();
+
+        canvas.setOnMouseClicked(mouseEvent -> {
+            pointList.add(new Point((int)mouseEvent.getX(), (int)mouseEvent.getY()));
+            Polygon polygon = new Polygon(borderColorPicker.getValue(), backgroundColorPicker.getValue(),
+                    pointList);
+            polygon.draw(graphicsContext);
+        });*/
+
         Point startPoint = new Point();
 
         canvas.setOnMousePressed(mouseEvent -> {
@@ -89,23 +105,17 @@ public class Controller {
 
         canvas.setOnMouseDragged(mouseEvent -> {
             graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-            Ellipse ellipse = new Ellipse(borderColorPicker.getValue(), startPoint,
+            Rhombus ellipse = new Rhombus(borderColorPicker.getValue(), startPoint,
                     backgroundColorPicker.getValue(), new Point((int)mouseEvent.getX(), (int)mouseEvent.getY()));
             ellipse.draw(graphicsContext);
         });
 
         canvas.setOnMouseReleased(mouseEvent -> {
             graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-            Ellipse ellipse = new Ellipse(borderColorPicker.getValue(), startPoint,
+            Rhombus ellipse = new Rhombus(borderColorPicker.getValue(), startPoint,
                     backgroundColorPicker.getValue(), new Point((int)mouseEvent.getX(), (int)mouseEvent.getY()));
             ellipse.draw(graphicsContext);
         });
-        /*canvas.setOnMouseDragged(event -> {
-            double x = event.getX() - brushSize / 2;
-            double y = event.getY() - brushSize / 2;
-            graphicsContext.setFill(colorPicker.getValue());
-            graphicsContext.fillRect(x, y, brushSize, brushSize);
-        });*/
     }
 
     public void initializeButton() {

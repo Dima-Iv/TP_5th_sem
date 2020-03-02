@@ -4,6 +4,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Dima
@@ -16,29 +18,13 @@ public class Rectangle extends Polygon {
 
     }
 
-    public Rectangle(javafx.scene.paint.Color borderColor, Point center, Color bgColor, Point[] points) {
-        super(borderColor, center, bgColor, points);
+    public Rectangle(Color borderColor, Point center, Color bgColor, Point endPoint) {
+        super(borderColor, center, bgColor);
+        List<Point> pointsList = new ArrayList<>();
+        pointsList.add(center);
+        pointsList.add(new Point(center.x, endPoint.y));
+        pointsList.add(endPoint);
+        pointsList.add(new Point(endPoint.x, center.y));
+        setPoints(pointsList);
     }
-
-    /**
-     * @param value
-     */
-    @Override
-    public void move(Point value) {
-        super.move(value);
-    }
-
-    /**
-     * @param graphicsContext
-     */
-    @Override
-    public void draw(GraphicsContext graphicsContext) {
-        super.draw(graphicsContext);
-    }
-
-    @Override
-    public Point location() {
-        return super.location();
-    }
-
 }
