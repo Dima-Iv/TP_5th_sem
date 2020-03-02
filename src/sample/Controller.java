@@ -9,10 +9,9 @@ import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import shape.elipse.Circle;
 import shape.elipse.Ellipse;
+import shape.polygon.*;
 import shape.polygon.Polygon;
 import shape.polygon.Rectangle;
-import shape.polygon.RegularPolygon;
-import shape.polygon.Rhombus;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -105,14 +104,14 @@ public class Controller {
 
         canvas.setOnMouseDragged(mouseEvent -> {
             graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-            Rhombus ellipse = new Rhombus(borderColorPicker.getValue(), startPoint,
+            Triangle ellipse = new Triangle(borderColorPicker.getValue(), startPoint,
                     backgroundColorPicker.getValue(), new Point((int)mouseEvent.getX(), (int)mouseEvent.getY()));
             ellipse.draw(graphicsContext);
         });
 
         canvas.setOnMouseReleased(mouseEvent -> {
             graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-            Rhombus ellipse = new Rhombus(borderColorPicker.getValue(), startPoint,
+            Triangle ellipse = new Triangle(borderColorPicker.getValue(), startPoint,
                     backgroundColorPicker.getValue(), new Point((int)mouseEvent.getX(), (int)mouseEvent.getY()));
             ellipse.draw(graphicsContext);
         });
