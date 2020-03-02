@@ -1,6 +1,5 @@
 package shape.polygon;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 import java.awt.*;
@@ -20,7 +19,7 @@ public class Rectangle extends Polygon {
 
     public Rectangle(Color borderColor, Point center, Color bgColor, Point endPoint) {
         super(borderColor, center, bgColor);
-        List<Point> pointsList = new ArrayList<>();
+        List<Point> pointsList = new ArrayList<>(4);
         pointsList.add(center);
         pointsList.add(new Point(center.x, endPoint.y));
         pointsList.add(endPoint);

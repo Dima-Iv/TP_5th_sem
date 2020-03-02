@@ -1,9 +1,9 @@
 package shape.polygon;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,28 +17,12 @@ public class Triangle extends Polygon {
 
     }
 
-    public Triangle(Color borderColor, Point center, Color bgColor, List<Point> points) {
-        super(borderColor, center, bgColor, points);
-    }
-
-    /**
-     * @param value
-     */
-    @Override
-    public void move(Point value) {
-        super.move(value);
-    }
-
-    /**
-     * @param graphicsContext
-     */
-    @Override
-    public void draw(GraphicsContext graphicsContext) {
-        super.draw(graphicsContext);
-    }
-
-    @Override
-    public Point location() {
-        return super.location();
+    public Triangle(Color borderColor, Point center, Color bgColor, Point endPoint) {
+        super(borderColor, center, bgColor);
+        List<Point> pointList = new ArrayList<>(3);
+        pointList.add(new Point((endPoint.x - center.x) / 2 + center.x, center.y));
+        pointList.add(new Point(center.x, endPoint.y));
+        pointList.add(new Point(endPoint.x, endPoint.y));
+        setPoints(pointList);
     }
 }
