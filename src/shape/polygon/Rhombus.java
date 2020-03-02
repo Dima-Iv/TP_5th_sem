@@ -20,7 +20,7 @@ public class Rhombus extends Polygon {
 
     public Rhombus(Color borderColor, Point center, Color bgColor, Point endPoint) {
         super(borderColor, center, bgColor);
-        List<Point> pointList = new ArrayList<>();
+        List<Point> pointList = new ArrayList<>(4);
         pointList.add(new Point((endPoint.x - center.x) / 2 + center.x, center.y));
         pointList.add(new Point(center. x, (endPoint.y - center.y) / 2 + center.y));
         pointList.add(new Point((endPoint.x - center.x) / 2 + center.x, endPoint.y));
