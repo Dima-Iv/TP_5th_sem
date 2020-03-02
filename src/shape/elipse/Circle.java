@@ -1,6 +1,11 @@
 package shape.elipse;
 
+import javafx.scene.paint.Color;
+
 import java.awt.*;
+
+import static java.lang.Math.abs;
+import static java.lang.Math.min;
 
 /**
  * @author Dima
@@ -13,25 +18,32 @@ public class Circle extends Ellipse {
 
     }
 
-    public Circle(Color borderColor, Point center, Color bgColor, Point circlePoint) {
-        super(borderColor, center, bgColor, circlePoint);
+    public Circle(Color borderColor, Point center, Color bgColor, Point borderPoint) {
+        super(borderColor, center, bgColor, borderPoint);
+        int width = abs(borderPoint.x - center.x);
+        int height = abs(borderPoint.y - center.y);
+        int min = min(width, height);
+        borderPoint.setLocation(center.x + min, center.y + min);
+        this.setBorderColor(borderColor);
+        this.setCenter(center);
+        this.setBGColor(bgColor);
     }
 
-    /**
-     * @param value
-     */
-    @Override
-    public void move(Point value) {
-        super.move(value);
-    }
-
-    /**
-     * @param graphics2D
-     */
-    @Override
-    public void draw(Graphics2D graphics2D) {
-        super.draw(graphics2D);
-    }
+    //**
+    // * @param graphicsContext
+    // */
+    /*@Override
+    public void draw(GraphicsContext graphicsContext) {
+        Point borderPoint = getBorderPoint();
+        Point centerPoint = getCenter();
+        int width = 2 * (int)abs(borderPoint.distance(centerPoint));
+        int topCornerPointX = centerPoint.x - width / 2;
+        int topCornerPointY = centerPoint.y - width / 2;
+        graphicsContext.setStroke(getBorderColor());
+        graphicsContext.strokeOval(topCornerPointX, topCornerPointY, width, width);
+        graphicsContext.setFill(getBGColor());
+        graphicsContext.fillOval(topCornerPointX, topCornerPointY, width, width);
+    }*/
 
     @Override
     public Point location() {
@@ -52,15 +64,15 @@ public class Circle extends Ellipse {
     }
 
     @Override
-    public Point getCirclePoint() {
-        return super.getCirclePoint();
+    public Point getBorderPoint() {
+        return super.getBorderPoint();
     }
 
     /**
-     * @param circlePoint
+     * @param borderPoint
      */
     @Override
-    public void setCirclePoint(Point circlePoint) {
-        super.setCirclePoint(circlePoint);
+    public void setBorderPoint(Point borderPoint) {
+        super.setBorderPoint(borderPoint);
     }
 }

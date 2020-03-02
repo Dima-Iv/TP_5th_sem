@@ -1,5 +1,7 @@
 package shape.interfaces;
 
+import javafx.scene.canvas.GraphicsContext;
+
 import java.awt.*;
 
 public interface Methods {
@@ -9,9 +11,9 @@ public interface Methods {
     void move(Point value);
 
     /**
-     * @param graphics2D
+     * @param graphicsContext
      */
-    void draw(Graphics2D graphics2D);
+    void draw(GraphicsContext graphicsContext);
 
     Point location();
 }

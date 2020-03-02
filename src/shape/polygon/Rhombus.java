@@ -1,6 +1,11 @@
 package shape.polygon;
 
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Dima
@@ -13,8 +18,15 @@ public class Rhombus extends Polygon {
 
     }
 
-    public Rhombus(Color borderColor, Point center, Color bgColor, Point[] points) {
-        super(borderColor, center, bgColor, points);
+    public Rhombus(Color borderColor, Point center, Color bgColor, Point endPoint) {
+        super(borderColor, center, bgColor);
+        List<Point> pointList = new ArrayList<>();
+        pointList.add(new Point((endPoint.x - center.x) / 2 + center.x, center.y));
+        pointList.add(new Point(center. x, (endPoint.y - center.y) / 2 + center.y));
+        pointList.add(new Point((endPoint.x - center.x) / 2 + center.x, endPoint.y));
+        pointList.add(new Point(endPoint.x, (endPoint.y - center.y) / 2 + center.y));
+        setPoints(pointList);
+
     }
 
     /**
@@ -26,11 +38,11 @@ public class Rhombus extends Polygon {
     }
 
     /**
-     * @param graphics2D
+     * @param graphicsContext
      */
     @Override
-    public void draw(Graphics2D graphics2D) {
-        super.draw(graphics2D);
+    public void draw(GraphicsContext graphicsContext) {
+        super.draw(graphicsContext);
     }
 
     @Override

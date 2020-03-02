@@ -1,9 +1,13 @@
 package shape.elipse;
 
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import shape.base.TwoDFigure;
 import shape.interfaces.Methods;
 
 import java.awt.*;
+
+import static java.lang.Math.abs;
 
 /**
  * @author Dima
@@ -12,26 +16,26 @@ import java.awt.*;
  */
 public class Ellipse extends TwoDFigure implements Methods {
 
-    private Point circlePoint;
+    private Point borderPoint;
 
     public Ellipse() {
 
     }
 
-    public Ellipse(Color borderColor, Point center, Color bgColor, Point circlePoint) {
+    public Ellipse(Color borderColor, Point center, Color bgColor, Point borderPoint) {
         super(borderColor, center, bgColor);
-        this.circlePoint = circlePoint;
+        this.borderPoint = borderPoint;
     }
 
-    public Point getCirclePoint() {
-        return circlePoint;
+    public Point getBorderPoint() {
+        return borderPoint;
     }
 
     /**
-     * @param circlePoint
+     * @param borderPoint
      */
-    public void setCirclePoint(Point circlePoint) {
-        this.circlePoint = circlePoint;
+    public void setBorderPoint(Point borderPoint) {
+        this.borderPoint = borderPoint;
     }
 
     /**
@@ -39,19 +43,32 @@ public class Ellipse extends TwoDFigure implements Methods {
      */
     @Override
     public void move(Point value) {
-
+        Point topCornerPoint = getCenter();
+        int centerPointX = (topCornerPoint.x + borderPoint.x) / 2;
+        int centerPointY = (topCornerPoint.y + borderPoint.y) / 2;
+        borderPoint.translate(value.x - centerPointX, value.y - centerPointY);
+        setCenter(value);
     }
 
     /**
-     * @param graphics2D
+     * @param graphicsContext
      */
     @Override
-    public void draw(Graphics2D graphics2D) {
-
+    public void draw(GraphicsContext graphicsContext) {
+        Point borderPoint = getBorderPoint();
+        Point centerPoint = getCenter();
+        int width = abs(borderPoint.x - centerPoint.x);
+        int height = abs(borderPoint.y - centerPoint.y);
+        int topCornerPointX = centerPoint.x - width;
+        int topCornerPointY = centerPoint.y - height;
+        graphicsContext.setStroke(getBorderColor());
+        graphicsContext.strokeOval(topCornerPointX, topCornerPointY, 2 * width, 2 * height);
+        graphicsContext.setFill(getBGColor());
+        graphicsContext.fillOval(topCornerPointX, topCornerPointY, 2 * width, 2 * height);
     }
 
     @Override
     public Point location() {
-        return null;
+        return getCenter();
     }
 }

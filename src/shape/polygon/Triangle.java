@@ -1,6 +1,10 @@
 package shape.polygon;
 
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+
 import java.awt.*;
+import java.util.List;
 
 /**
  * @author Dima
@@ -13,7 +17,7 @@ public class Triangle extends Polygon {
 
     }
 
-    public Triangle(Color borderColor, Point center, Color bgColor, Point[] points) {
+    public Triangle(Color borderColor, Point center, Color bgColor, List<Point> points) {
         super(borderColor, center, bgColor, points);
     }
 
@@ -26,11 +30,11 @@ public class Triangle extends Polygon {
     }
 
     /**
-     * @param graphics2D
+     * @param graphicsContext
      */
     @Override
-    public void draw(Graphics2D graphics2D) {
-        super.draw(graphics2D);
+    public void draw(GraphicsContext graphicsContext) {
+        super.draw(graphicsContext);
     }
 
     @Override

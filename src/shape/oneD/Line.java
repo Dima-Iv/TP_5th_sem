@@ -1,5 +1,7 @@
 package shape.oneD;
 
+import javafx.scene.paint.Color;
+
 import java.awt.*;
 
 /**
@@ -15,26 +17,5 @@ public class Line extends Ray {
 
     public Line(Color borderColor, Point center, Point endPoint) {
         super(borderColor, center, endPoint);
-    }
-
-    /**
-     * @param value
-     */
-    @Override
-    public void move(Point value) {
-        super.move(value);
-    }
-
-    /**
-     * @param graphics2D
-     */
-    @Override
-    public void draw(Graphics2D graphics2D) {
-        super.draw(graphics2D);
-    }
-
-    @Override
-    public Point location() {
-        return super.location();
     }
 }

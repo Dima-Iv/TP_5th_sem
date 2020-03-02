@@ -1,5 +1,7 @@
 package shape.base;
 
+import javafx.scene.paint.Color;
+
 import java.awt.*;
 
 /**
@@ -9,7 +11,7 @@ import java.awt.*;
  */
 public abstract class TwoDFigure extends Figure {
 
-    private Color bgColor = Color.BLACK;
+    private Color bgColor;
 
     public TwoDFigure() {
 
@@ -17,6 +19,11 @@ public abstract class TwoDFigure extends Figure {
 
     public TwoDFigure(Color borderColor, Point center, Color bgColor) {
         super(borderColor, center);
+        this.bgColor = bgColor;
+    }
+
+    public TwoDFigure(Color borderColor, Color bgColor) {
+        super(borderColor);
         this.bgColor = bgColor;
     }
 
