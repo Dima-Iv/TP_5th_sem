@@ -15,10 +15,6 @@ public abstract class Figure implements Methods {
     private Color borderColor;
     private Point center;
 
-    public Figure() {
-
-    }
-
     public Figure(Color borderColor) {
         this.borderColor = borderColor;
     }

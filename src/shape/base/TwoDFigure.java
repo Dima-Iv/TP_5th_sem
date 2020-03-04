@@ -13,10 +13,6 @@ public abstract class TwoDFigure extends Figure {
 
     private Color bgColor;
 
-    public TwoDFigure() {
-
-    }
-
     public TwoDFigure(Color borderColor, Point center, Color bgColor) {
         super(borderColor, center);
         this.bgColor = bgColor;

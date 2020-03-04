@@ -14,10 +14,6 @@ import java.util.List;
  */
 public class Rhombus extends Polygon {
 
-    public Rhombus() {
-
-    }
-
     public Rhombus(Color borderColor, Point center, Color bgColor, Point endPoint) {
         super(borderColor, center, bgColor);
         List<Point> pointList = new ArrayList<>(4);

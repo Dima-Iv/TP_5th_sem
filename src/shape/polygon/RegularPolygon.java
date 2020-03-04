@@ -1,7 +1,6 @@
 package shape.polygon;
 
 import javafx.scene.paint.Color;
-import shape.interfaces.Methods;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -12,11 +11,7 @@ import java.util.List;
  * @version 1.0
  * @created 28-���-2020 18:39:58
  */
-public class RegularPolygon extends Polygon implements Methods {
-
-    public RegularPolygon() {
-
-    }
+public class RegularPolygon extends Polygon{
 
     public RegularPolygon(Color borderColor, Point center, Point endPoint, Color bgColor, int pointCount) {
         super(borderColor, center, bgColor);

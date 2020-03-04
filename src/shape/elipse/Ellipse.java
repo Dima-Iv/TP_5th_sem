@@ -3,7 +3,6 @@ package shape.elipse;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import shape.base.TwoDFigure;
-import shape.interfaces.Methods;
 
 import java.awt.*;
 
@@ -14,13 +13,9 @@ import static java.lang.Math.abs;
  * @version 1.0
  * @created 28-���-2020 18:39:58
  */
-public class Ellipse extends TwoDFigure implements Methods {
+public class Ellipse extends TwoDFigure {
 
     private Point borderPoint;
-
-    public Ellipse() {
-
-    }
 
     public Ellipse(Color borderColor, Point center, Color bgColor, Point borderPoint) {
         super(borderColor, center, bgColor);

@@ -14,10 +14,6 @@ import static java.lang.Math.min;
  */
 public class Circle extends Ellipse {
 
-    public Circle() {
-
-    }
-
     public Circle(Color borderColor, Point center, Color bgColor, Point borderPoint) {
         super(borderColor, center, bgColor, borderPoint);
         int width = abs(borderPoint.x - center.x);

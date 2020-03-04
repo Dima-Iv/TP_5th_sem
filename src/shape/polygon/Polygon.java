@@ -3,7 +3,6 @@ package shape.polygon;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import shape.base.TwoDFigure;
-import shape.interfaces.Methods;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -16,13 +15,9 @@ import java.util.stream.IntStream;
  * @version 1.0
  * @created 28-���-2020 18:39:58
  */
-public class Polygon extends TwoDFigure implements Methods {
+public class Polygon extends TwoDFigure {
 
     private List<Point> points;
-
-    public Polygon() {
-
-    }
 
     public Polygon(Color borderColor, Point center, Color bgColor) {
         super(borderColor, center, bgColor);

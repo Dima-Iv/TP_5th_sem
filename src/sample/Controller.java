@@ -61,7 +61,7 @@ public class Controller {
     private RadioButton radioButtonRegularShape;
 
     @FXML
-    private RadioButton radioButtonSymmetricShape;
+    private RadioButton radioButtonTriangle;
 
     @FXML
     private RadioButton radioButtonCircle;
@@ -74,17 +74,14 @@ public class Controller {
     @FXML
     private RadioButton radioButtonRhombus;
 
-    private double brushSize = 1;
     private int n;
     private List<Figure> figures;
     private List<Point> pointList;
-    private Figure figure;
     private static final String SEGMENT = "segment";
     private static final String RAY = "ray";
     private static final String LINE = "line";
     private static final String POLYLINE = "polyline";
     private static final String ASYMMETRIC_SHAPE = "asymmetricShape";
-    private static final String SYMMETRIC_SHAPE = "symmetricShape";
     private static final String REGULAR_SHAPE = "regularShape";
     private static final String CIRCLE = "circle";
     private static final String ELLIPSE = "ellipse";
@@ -119,8 +116,8 @@ public class Controller {
         radioButtonAsymmetricShape.setUserData(ASYMMETRIC_SHAPE);
         radioButtonRegularShape.setToggleGroup(toggleGroup);
         radioButtonRegularShape.setUserData(REGULAR_SHAPE);
-        radioButtonSymmetricShape.setToggleGroup(toggleGroup);
-        radioButtonSymmetricShape.setUserData(SYMMETRIC_SHAPE);
+        radioButtonTriangle.setToggleGroup(toggleGroup);
+        radioButtonTriangle.setUserData(TRIANGLE);
         radioButtonCircle.setToggleGroup(toggleGroup);
         radioButtonCircle.setUserData(CIRCLE);
         radioButtonEllipse.setToggleGroup(toggleGroup);
@@ -142,9 +139,7 @@ public class Controller {
         graphicsContext = canvas.getGraphicsContext2D();
         startPoint = new Point();
         endPoint = new Point();
-
-       /* Circle circle = new Circle(Color.BLACK, new Point(30, 30), Color.WHITE, new Point(60, 60));
-        figures.add(circle);*/
+        figureName = SEGMENT;
 
         canvas.setOnMouseClicked(mouseEvent -> {
             pointList.add(new Point((int)mouseEvent.getX(), (int)mouseEvent.getY()));
@@ -157,8 +152,8 @@ public class Controller {
 
         canvas.setOnMouseDragged(mouseEvent -> {
             endPoint.setLocation(mouseEvent.getX(), mouseEvent.getY());
+            graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
             drawFigure(true);
-            //graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         });
 
         canvas.setOnMouseReleased(mouseEvent -> {
@@ -185,21 +180,27 @@ public class Controller {
         Color borderColor = borderColorPicker.getValue();
         switch (figureName) {
             case SEGMENT: {
-                /*LineSegment lineSegment = new LineSegment(borderColor, startPoint, endPoint);
+                LineSegment lineSegment = new LineSegment(borderColor, startPoint, endPoint);
                 lineSegment.draw(graphicsContext);
-                figures.add(lineSegment);*/
+                if(!dragFlag){
+                    figures.add(lineSegment);
+                }
                 break;
             }
             case RAY: {
-                /*Ray ray = new Ray(borderColor, startPoint, endPoint);
+                Ray ray = new Ray(borderColor, startPoint, endPoint);
                 ray.draw(graphicsContext);
-                figures.add(ray);*/
+                if(!dragFlag){
+                    figures.add(ray);
+                }
                 break;
             }
             case LINE: {
-               /* Line line = new Line(borderColor, startPoint, endPoint);
+                Line line = new Line(borderColor, startPoint, endPoint);
                 line.draw(graphicsContext);
-                figures.add(line);*/
+                if(!dragFlag){
+                figures.add(line);
+                }
                break;
             }
             case POLYLINE: {
@@ -222,10 +223,6 @@ public class Controller {
                 regularPolygon.draw(graphicsContext);
                 if(!dragFlag)
                     figures.add(regularPolygon);
-                break;
-            }
-            case SYMMETRIC_SHAPE: {
-                //todo
                 break;
             }
             case CIRCLE: {

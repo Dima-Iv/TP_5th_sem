@@ -13,10 +13,6 @@ import java.util.List;
  */
 public class Rectangle extends Polygon {
 
-    public Rectangle() {
-
-    }
-
     public Rectangle(Color borderColor, Point center, Color bgColor, Point endPoint) {
         super(borderColor, center, bgColor);
         List<Point> pointsList = new ArrayList<>(4);

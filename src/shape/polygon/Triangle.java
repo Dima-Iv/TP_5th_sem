@@ -13,10 +13,6 @@ import java.util.List;
  */
 public class Triangle extends Polygon {
 
-    public Triangle() {
-
-    }
-
     public Triangle(Color borderColor, Point center, Color bgColor, Point endPoint) {
         super(borderColor, center, bgColor);
         List<Point> pointList = new ArrayList<>(3);

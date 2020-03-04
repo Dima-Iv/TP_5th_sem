@@ -3,7 +3,6 @@ package shape.oneD;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import shape.base.Figure;
-import shape.interfaces.Methods;
 
 import java.awt.*;
 
@@ -12,13 +11,9 @@ import java.awt.*;
  * @version 1.0
  * @created 28-���-2020 18:39:58
  */
-public class PolyLine extends Figure implements Methods {
+public class PolyLine extends Figure {
 
     public LineSegment[] lineSegments;
-
-    public PolyLine() {
-
-    }
 
     public PolyLine(Color borderColor, Point center, LineSegment[] lineSegments) {
         super(borderColor, center);
