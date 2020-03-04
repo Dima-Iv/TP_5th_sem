@@ -1,6 +1,7 @@
 package shape.base;
 
 import javafx.scene.paint.Color;
+import shape.interfaces.Methods;
 
 import java.awt.*;
 
@@ -9,7 +10,7 @@ import java.awt.*;
  * @version 1.0
  * @created 28-фев-2020 18:39:58
  */
-public abstract class Figure {
+public abstract class Figure implements Methods {
 
     private Color borderColor;
     private Point center;

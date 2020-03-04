@@ -15,12 +15,18 @@ import shape.elipse.Ellipse;
 import shape.oneD.Line;
 import shape.oneD.LineSegment;
 import shape.oneD.Ray;
+import shape.polygon.Polygon;
 import shape.polygon.RegularPolygon;
 import shape.polygon.Rhombus;
+import shape.polygon.Triangle;
 
 import java.awt.*;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PrimitiveIterator;
+
+import static java.lang.Math.abs;
 
 public class Controller {
 
@@ -71,6 +77,7 @@ public class Controller {
     private double brushSize = 1;
     private int n;
     private List<Figure> figures;
+    private List<Point> pointList;
     private Figure figure;
     private static final String SEGMENT = "segment";
     private static final String RAY = "ray";
@@ -91,6 +98,7 @@ public class Controller {
     @FXML
     public void initialize() {
         figures = new ArrayList<>();
+        pointList = new ArrayList<>();
         initializeRadioButtons();
         initializeCanvas();
         initializeButton();
@@ -119,6 +127,7 @@ public class Controller {
         radioButtonEllipse.setUserData(ELLIPSE);
         radioButtonRhombus.setToggleGroup(toggleGroup);
         radioButtonRhombus.setUserData(RHOMBUS);
+
         toggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             public void changed(ObservableValue<? extends Toggle> ov,
                                 Toggle old_toggle, Toggle new_toggle) {
@@ -133,13 +142,29 @@ public class Controller {
         graphicsContext = canvas.getGraphicsContext2D();
         startPoint = new Point();
         endPoint = new Point();
+
+       /* Circle circle = new Circle(Color.BLACK, new Point(30, 30), Color.WHITE, new Point(60, 60));
+        figures.add(circle);*/
+
+        canvas.setOnMouseClicked(mouseEvent -> {
+            pointList.add(new Point((int)mouseEvent.getX(), (int)mouseEvent.getY()));
+            drawFigure(false);
+        });
+
         canvas.setOnMousePressed(mouseEvent -> {
             startPoint.setLocation(mouseEvent.getX(), mouseEvent.getY());
         });
 
+        canvas.setOnMouseDragged(mouseEvent -> {
+            endPoint.setLocation(mouseEvent.getX(), mouseEvent.getY());
+            drawFigure(true);
+            //graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        });
+
         canvas.setOnMouseReleased(mouseEvent -> {
             endPoint.setLocation(mouseEvent.getX(), mouseEvent.getY());
-            drawFigure();
+            drawFigure(false);
+            System.out.println(figures);
         });
     }
 
@@ -155,62 +180,85 @@ public class Controller {
         });
     }
 
-    public void drawFigure() {
+    public void drawFigure(Boolean dragFlag) {
         Color backgroundColor = backgroundColorPicker.getValue();
         Color borderColor = borderColorPicker.getValue();
         switch (figureName) {
             case SEGMENT: {
-                LineSegment lineSegment = new LineSegment(borderColor, startPoint, endPoint);
+                /*LineSegment lineSegment = new LineSegment(borderColor, startPoint, endPoint);
                 lineSegment.draw(graphicsContext);
-                figures.add(lineSegment);
+                figures.add(lineSegment);*/
+                break;
             }
             case RAY: {
-                Ray ray = new Ray(borderColor, startPoint, endPoint);
+                /*Ray ray = new Ray(borderColor, startPoint, endPoint);
                 ray.draw(graphicsContext);
-                figures.add(ray);
+                figures.add(ray);*/
+                break;
             }
             case LINE: {
-                Line line = new Line(borderColor, startPoint, endPoint);
+               /* Line line = new Line(borderColor, startPoint, endPoint);
                 line.draw(graphicsContext);
-                figures.add(line);
+                figures.add(line);*/
+               break;
             }
             case POLYLINE: {
                 //todo
 //                PolyLine polyLine = new PolyLine(borderColor, startPoint, endPoint);
 //                polyLine.draw(graphicsContext);
                 //figures.add(polyLine);
+                break;
             }
             case ASYMMETRIC_SHAPE: {
-                //todo
+                Polygon polygon = new Polygon(borderColor, startPoint, backgroundColor, pointList);
+                polygon.draw(graphicsContext);
+                if(!dragFlag) {
+                    figures.add(polygon);
+                }
+                break;
             }
             case REGULAR_SHAPE: {
-                RegularPolygon lineSegment = new RegularPolygon(borderColor, startPoint, endPoint, backgroundColor, n);
-                lineSegment.draw(graphicsContext);
-                figures.add(lineSegment);
+                RegularPolygon regularPolygon = new RegularPolygon(borderColor, startPoint, endPoint, backgroundColor, n);
+                regularPolygon.draw(graphicsContext);
+                if(!dragFlag)
+                    figures.add(regularPolygon);
+                break;
             }
             case SYMMETRIC_SHAPE: {
                 //todo
+                break;
             }
             case CIRCLE: {
                 Circle circle = new Circle(borderColor, startPoint, backgroundColor, endPoint);
                 circle.draw(graphicsContext);
-                figures.add(circle);
+                if(!dragFlag) {
+                    figures.add(circle);
+                }
+                break;
             }
             case ELLIPSE: {
                 Ellipse ellipse = new Ellipse(borderColor, startPoint, backgroundColor, endPoint);
                 ellipse.draw(graphicsContext);
-                figures.add(ellipse);
+                if(!dragFlag) {
+                    figures.add(ellipse);
+                }
+                break;
             }
             case RHOMBUS: {
                 Rhombus rhombus = new Rhombus(borderColor, startPoint, backgroundColor, endPoint);
                 rhombus.draw(graphicsContext);
+                if(!dragFlag){
                 figures.add(rhombus);
+                }
+                break;
             }
             case TRIANGLE: {
-                //todo
-//                Triangle triangle = new Triangle(borderColor, startPoint, backgroundColor, endPoint);
-//                triangle.draw(graphicsContext);
-                //figures.add(triangle);
+                Triangle triangle = new Triangle(borderColor, startPoint, backgroundColor, endPoint);
+                triangle.draw(graphicsContext);
+                if(!dragFlag) {
+                    figures.add(triangle);
+                }
+                break;
             }
         }
     }
