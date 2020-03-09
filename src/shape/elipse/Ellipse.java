@@ -40,9 +40,9 @@ public class Ellipse extends TwoDFigure {
     public void move(Point value) {
         Point prevCenter = getCenter();
         Point prevBorderPoint = getBorderPoint();
-        int wight = abs(prevBorderPoint.x - prevCenter.x);
+        int width = abs(prevBorderPoint.x - prevCenter.x);
         int height = abs(prevBorderPoint.y - prevCenter.y);
-        Point newBorderPoint = new Point(value.x + wight, value.y + height);
+        Point newBorderPoint = new Point(value.x + width, value.y + height);
         setCenter(value);
         setBorderPoint(newBorderPoint);
     }
