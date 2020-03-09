@@ -76,11 +76,9 @@ public class Controller {
     public RadioButton radioButtonRectangle;
 
     private int n;
-    private int pointCounter = 0;
-    private int lineSegmentCounter = 0;
     private List<Figure> figures;
-    private List<List<Point>> pointList;
-    private List<List<LineSegment>> lineSegments;
+    private List<Point> pointList;
+    private List<LineSegment> lineSegments;
     private static final String SEGMENT = "segment";
     private static final String RAY = "ray";
     private static final String LINE = "line";
@@ -99,13 +97,7 @@ public class Controller {
     public void initialize() {
         figures = new ArrayList<>();
         pointList = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            pointList.add(new ArrayList<>());
-        }
         lineSegments = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            lineSegments.add(new ArrayList<>());
-        }
         figureName = SEGMENT;
         initializeRadioButtons();
         initializeCanvas();
@@ -198,203 +190,146 @@ public class Controller {
         });
     }
 
-    public void repaint() {
+    public void dragRepaintAndSave(Figure figure, boolean dragFlag, boolean moveFlag) {
         graphicsContext.setFill(Color.WHITE);
         graphicsContext.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        if (moveFlag) {
+            figure.draw(graphicsContext);
+        }
         for (Figure value : figures) {
             value.draw(graphicsContext);
         }
-    }
-
-    public void dragRepaint(Figure figure) {
-        graphicsContext.setFill(Color.WHITE);
-        graphicsContext.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        for (Figure value : figures) {
-            value.draw(graphicsContext);
+        if (!moveFlag) {
+            figure.draw(graphicsContext);
         }
-        figure.draw(graphicsContext);
+        if (!dragFlag) {
+            figures.add(figure);
+        }
     }
 
-    public void moveFigure(Point startPoint, Point endPoint) {
+    public Figure moveFigure(Point startPoint, Point endPoint) {
         for (int i = figures.size() - 1; i >= 0; i--) {
             if (figures.get(i).contains(startPoint)) {
                 figures.get(i).move(endPoint);
-                break;
+                return figures.get(i);
             }
         }
+        return null;
     }
 
     public void drawFigure(Boolean dragFlag, Boolean endFigureFlag, Boolean moveFlag, Point startPoint, Point endPoint) {
         Color backgroundColor = backgroundColorPicker.getValue();
         Color borderColor = borderColorPicker.getValue();
-        switch (figureName) {
-            case SEGMENT: {
-                if (moveFlag) {
-                    moveFigure(startPoint, endPoint);
-                    repaint();
-                } else {
-                    LineSegment lineSegment = new LineSegment(borderColor, startPoint, endPoint);
-                    dragRepaint(lineSegment);
-                    if (!dragFlag) {
-                        figures.add(lineSegment);
-                    }
+        Figure figure;
+        if (moveFlag) {
+            Figure fig = moveFigure(startPoint, endPoint);
+            if (fig != null)
+                dragRepaintAndSave(fig, true, true);
+        } else {
+            switch (figureName) {
+                case SEGMENT: {
+                    figure = new LineSegment(borderColor, startPoint, endPoint);
+                    dragRepaintAndSave(figure, dragFlag, false);
+                    break;
                 }
-                break;
-            }
-            case RAY: {
-                if (moveFlag) {
-                    moveFigure(startPoint, endPoint);
-                    repaint();
-                } else {
-                    Ray ray = new Ray(borderColor, startPoint, endPoint);
-                    dragRepaint(ray);
-                    if (!dragFlag) {
-                        figures.add(ray);
-                    }
+                case RAY: {
+                    figure = new Ray(borderColor, startPoint, endPoint);
+                    dragRepaintAndSave(figure, dragFlag, false);
+                    break;
                 }
-                break;
-            }
-            case LINE: {
-                if (moveFlag) {
-                    moveFigure(startPoint, endPoint);
-                    repaint();
-                } else {
-                    Line line = new Line(borderColor, startPoint, endPoint);
-                    dragRepaint(line);
-                    if (!dragFlag) {
-                        figures.add(line);
-                    }
+                case LINE: {
+                    figure = new Line(borderColor, startPoint, endPoint);
+                    dragRepaintAndSave(figure, dragFlag, false);
+                    break;
                 }
-                break;
-            }
-            case POLYLINE: {
-                if (moveFlag) {
-                    moveFigure(startPoint, endPoint);
-                    repaint();
-                } else {
-                    PolyLine polyLine;
+                case REGULAR_SHAPE: {
+                    figure = new RegularPolygon(borderColor, startPoint, endPoint, backgroundColor, n);
+                    dragRepaintAndSave(figure, dragFlag, false);
+                    break;
+                }
+                case CIRCLE: {
+                    figure = new Circle(borderColor, startPoint, backgroundColor, endPoint);
+                    dragRepaintAndSave(figure, dragFlag, false);
+                    break;
+                }
+                case ELLIPSE: {
+                    figure = new Ellipse(borderColor, startPoint, backgroundColor, endPoint);
+                    dragRepaintAndSave(figure, dragFlag, false);
+                    break;
+                }
+                case RHOMBUS: {
+                    figure = new Rhombus(borderColor, startPoint, backgroundColor, endPoint);
+                    dragRepaintAndSave(figure, dragFlag, false);
+                    break;
+                }
+                case TRIANGLE: {
+                    Triangle triangle = new Triangle(borderColor, startPoint, backgroundColor, endPoint);
+                    dragRepaintAndSave(triangle, dragFlag, false);
+                    break;
+                }
+                case RECTANGLE: {
+                    figure = new Rectangle(borderColor, startPoint, backgroundColor, endPoint);
+                    dragRepaintAndSave(figure, dragFlag, false);
+                    break;
+                }
+                case POLYLINE: {
                     LineSegment lineSegment;
-                    if (lineSegments.get(lineSegmentCounter).isEmpty()) {
-                        polyLine = new PolyLine(borderColor, startPoint, lineSegments.get(lineSegmentCounter));
+                    if (lineSegments.isEmpty()) {
+                        figure = new PolyLine(borderColor, startPoint, lineSegments);
                         lineSegment = new LineSegment(borderColor, startPoint, endPoint);
                     } else {
-                        polyLine = new PolyLine(borderColor, lineSegments.get(lineSegmentCounter).get(0).getCenter()
-                                , lineSegments.get(lineSegmentCounter));
+                        figure = new PolyLine(borderColor, lineSegments.get(0).getCenter()
+                                , lineSegments);
                         lineSegment = new LineSegment(borderColor,
-                                lineSegments.get(lineSegmentCounter).get(lineSegments.get(lineSegmentCounter).size() - 1).getEndPoint()
+                                lineSegments.get(lineSegments.size() - 1).getEndPoint()
                                 , endPoint);
                     }
-                    lineSegments.get(lineSegmentCounter).add(lineSegment);
-                    polyLine.setLineSegments(lineSegments.get(lineSegmentCounter));
-                    dragRepaint(polyLine);
-                    if (!dragFlag && endFigureFlag) {
-                        figures.add(polyLine);
-                        lineSegmentCounter++;
+                    lineSegments.add(lineSegment);
+                    ((PolyLine) figure).setLineSegments(cloneLineSegments());
+                    dragRepaintAndSave(figure, true, false);
+                    if (endFigureFlag) {
+                        dragRepaintAndSave(figure, dragFlag, false);
+                        lineSegments.clear();
                     }
+                    break;
                 }
-                break;
-            }
-            case ASYMMETRIC_SHAPE: {
-                if (moveFlag) {
-                    moveFigure(startPoint, endPoint);
-                    repaint();
-                } else {
-                    Polygon polygon;
+                case ASYMMETRIC_SHAPE: {
                     Point point = new Point(endPoint);
-                    if (pointList.get(pointCounter).isEmpty()) {
-                        polygon = new Polygon(borderColor, startPoint, backgroundColor);
-
+                    if (pointList.isEmpty()) {
+                        figure = new Polygon(borderColor, startPoint, backgroundColor);
                     } else {
-                        polygon = new Polygon(borderColor, pointList.get(pointCounter).get(0), backgroundColor);
+                        figure = new Polygon(borderColor, pointList.get(0), backgroundColor);
                     }
-                    pointList.get(pointCounter).add(point);
-                    polygon.setPoints(pointList.get(pointCounter));
-                    dragRepaint(polygon);
-                    if (!dragFlag && endFigureFlag) {
-                        figures.add(polygon);
-                        pointCounter++;
+                    pointList.add(point);
+                    ((Polygon) figure).setPoints(clonePoints());
+                    dragRepaintAndSave(figure, true, false);
+                    if (endFigureFlag) {
+                        dragRepaintAndSave(figure, dragFlag, false);
+                        pointList.clear();
                     }
+                    break;
                 }
-                break;
-            }
-            case REGULAR_SHAPE: {
-                if (moveFlag) {
-                    moveFigure(startPoint, endPoint);
-                    repaint();
-                } else {
-                    RegularPolygon regularPolygon = new RegularPolygon(borderColor, startPoint, endPoint, backgroundColor, n);
-                    dragRepaint(regularPolygon);
-                    if (!dragFlag) {
-                        figures.add(regularPolygon);
-                    }
-                }
-                break;
-            }
-            case CIRCLE: {
-                if (moveFlag) {
-                    moveFigure(startPoint, endPoint);
-                    repaint();
-                } else {
-                    Circle circle = new Circle(borderColor, startPoint, backgroundColor, endPoint);
-                    dragRepaint(circle);
-                    if (!dragFlag) {
-                        figures.add(circle);
-                    }
-                }
-                break;
-            }
-            case ELLIPSE: {
-                if (moveFlag) {
-                    moveFigure(startPoint, endPoint);
-                    repaint();
-                } else {
-                    Ellipse ellipse = new Ellipse(borderColor, startPoint, backgroundColor, endPoint);
-                    dragRepaint(ellipse);
-                    if (!dragFlag) {
-                        figures.add(ellipse);
-                    }
-                }
-                break;
-            }
-            case RHOMBUS: {
-                if (moveFlag) {
-                    moveFigure(startPoint, endPoint);
-                    repaint();
-                } else {
-                    Rhombus rhombus = new Rhombus(borderColor, startPoint, backgroundColor, endPoint);
-                    dragRepaint(rhombus);
-                    if (!dragFlag) {
-                        figures.add(rhombus);
-                    }
-                }
-                break;
-            }
-            case TRIANGLE: {
-                if (moveFlag) {
-                    moveFigure(startPoint, endPoint);
-                    repaint();
-                } else {
-                    Triangle triangle = new Triangle(borderColor, startPoint, backgroundColor, endPoint);
-                    dragRepaint(triangle);
-                    if (!dragFlag) {
-                        figures.add(triangle);
-                    }
-                }
-                break;
-            }
-            case RECTANGLE: {
-                if (moveFlag) {
-                    moveFigure(startPoint, endPoint);
-                    repaint();
-                } else {
-                    Rectangle rectangle = new Rectangle(borderColor, startPoint, backgroundColor, endPoint);
-                    dragRepaint(rectangle);
-                    if (!dragFlag) {
-                        figures.add(rectangle);
-                    }
-                }
-                break;
             }
         }
+    }
+
+
+    public ArrayList<LineSegment> cloneLineSegments() {
+        ArrayList<LineSegment> clone = new ArrayList<>();
+        for (LineSegment lineSegment : lineSegments) {
+            Point center = new Point((int) lineSegment.getCenter().getX(), (int) lineSegment.getCenter().getY());
+            Point endPoint = new Point((int) lineSegment.getEndPoint().getX(), (int) lineSegment.getEndPoint().getY());
+            clone.add(new LineSegment(lineSegment.getBorderColor(), center, endPoint));
+        }
+        return clone;
+    }
+
+    public ArrayList<Point> clonePoints() {
+        ArrayList<Point> clone = new ArrayList<>();
+        for (Point point : pointList) {
+            Point clonePoint = new Point((int) point.getX(), (int) point.getY());
+            clone.add(clonePoint);
+        }
+        return clone;
     }
 }
