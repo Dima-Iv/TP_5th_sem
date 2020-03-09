@@ -40,4 +40,30 @@ public class Line extends Ray {
             setCenter(new Point((int)widthS, (int)(deltaY / deltaX * (widthS - center.x) + center.y)));
         }
     }
+
+    @Override
+    public void move(Point value) {
+        super.move(value);
+        Point endPoint = getEndPoint();
+        Point startPoint = location();
+        double deltaX = endPoint.x - startPoint.x;
+        double deltaY = endPoint.y - startPoint.y;
+        if (Math.abs(deltaX) < Math.abs(deltaY)) {
+            double height;
+            if (deltaY < 0) {
+                height = Toolkit.getDefaultToolkit().getScreenSize().getHeight() + 1;
+            } else {
+                height = -1;
+            }
+            setCenter(new Point((int) (deltaX / deltaY * (height - startPoint.y) + startPoint.x), (int) height));
+        } else {
+            double width;
+            if (deltaX < 0) {
+                width = Toolkit.getDefaultToolkit().getScreenSize().getWidth() + 1;
+            } else {
+                width = -1;
+            }
+            setCenter(new Point((int) width, (int) (deltaY / deltaX * (width - startPoint.x) + startPoint.y)));
+        }
+    }
 }

@@ -1,6 +1,5 @@
 package shape.polygon;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 import java.awt.*;
@@ -22,27 +21,5 @@ public class Rhombus extends Polygon {
         pointList.add(new Point((endPoint.x - center.x) / 2 + center.x, endPoint.y));
         pointList.add(new Point(endPoint.x, (endPoint.y - center.y) / 2 + center.y));
         setPoints(pointList);
-
-    }
-
-    /**
-     * @param value
-     */
-    @Override
-    public void move(Point value) {
-        super.move(value);
-    }
-
-    /**
-     * @param graphicsContext
-     */
-    @Override
-    public void draw(GraphicsContext graphicsContext) {
-        super.draw(graphicsContext);
-    }
-
-    @Override
-    public Point location() {
-        return super.location();
     }
 }

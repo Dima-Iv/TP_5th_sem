@@ -16,4 +16,6 @@ public interface Methods {
     void draw(GraphicsContext graphicsContext);
 
     Point location();
+
+    boolean contains(Point value);
 }

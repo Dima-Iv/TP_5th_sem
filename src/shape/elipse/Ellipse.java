@@ -38,11 +38,13 @@ public class Ellipse extends TwoDFigure {
      */
     @Override
     public void move(Point value) {
-        Point topCornerPoint = getCenter();
-        int centerPointX = (topCornerPoint.x + borderPoint.x) / 2;
-        int centerPointY = (topCornerPoint.y + borderPoint.y) / 2;
-        borderPoint.translate(value.x - centerPointX, value.y - centerPointY);
+        Point prevCenter = getCenter();
+        Point prevBorderPoint = getBorderPoint();
+        int wight = abs(prevBorderPoint.x - prevCenter.x);
+        int height = abs(prevBorderPoint.y - prevCenter.y);
+        Point newBorderPoint = new Point(value.x + wight, value.y + height);
         setCenter(value);
+        setBorderPoint(newBorderPoint);
     }
 
     /**
@@ -65,5 +67,15 @@ public class Ellipse extends TwoDFigure {
     @Override
     public Point location() {
         return getCenter();
+    }
+
+    @Override
+    public boolean contains(Point value) {
+        Point center = getCenter();
+        int width = 2 * abs(borderPoint.x - center.x);
+        int height = 2 * abs(borderPoint.y - center.y);
+        double alpha = (double) (value.x - center.x) / width;
+        double beta = (double) (value.y - center.y) / height;
+        return 4 * (alpha * alpha + beta * beta) < 1;
     }
 }

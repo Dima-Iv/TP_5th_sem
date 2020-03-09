@@ -18,10 +18,6 @@ public class RegularPolygon extends Polygon{
         setPolygonPoints(center, endPoint, pointCount);
     }
 
-    public Point location() {
-        return getCenter();
-    }
-
     private void setPolygonPoints(Point center, Point endPoint, int pointCount) {
         List<Point> points = new ArrayList<>(pointCount + 1);
         double radius = Math.sqrt(Math.pow((endPoint.x) - center.x, 2) + Math.pow(endPoint.y - center.y, 2));

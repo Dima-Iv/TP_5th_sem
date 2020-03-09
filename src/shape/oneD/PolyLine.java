@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 import shape.base.Figure;
 
 import java.awt.*;
+import java.util.List;
 
 /**
  * @author Dima
@@ -13,21 +14,21 @@ import java.awt.*;
  */
 public class PolyLine extends Figure {
 
-    public LineSegment[] lineSegments;
+    public List<LineSegment> lineSegments;
 
-    public PolyLine(Color borderColor, Point center, LineSegment[] lineSegments) {
+    public PolyLine(Color borderColor, Point center, List<LineSegment> lineSegments) {
         super(borderColor, center);
         this.lineSegments = lineSegments;
     }
 
-    public LineSegment[] getLineSegments() {
+    public List<LineSegment> getLineSegments() {
         return lineSegments;
     }
 
     /**
      * @param values
      */
-    public void setLineSegments(LineSegment[] values) {
+    public void setLineSegments(List<LineSegment> values) {
         this.lineSegments = values;
     }
 
@@ -43,11 +44,16 @@ public class PolyLine extends Figure {
      */
     @Override
     public void draw(GraphicsContext graphicsContext) {
-
+        lineSegments.forEach(lineSegment -> lineSegment.draw(graphicsContext));
     }
 
     @Override
     public Point location() {
         return null;
+    }
+
+    @Override
+    public boolean contains(Point value) {
+        return false;
     }
 }

@@ -3,9 +3,11 @@ package shape.oneD;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import shape.base.Figure;
-import shape.interfaces.Methods;
 
 import java.awt.*;
+
+import static java.lang.Math.abs;
+import static java.lang.Math.sqrt;
 
 /**
  * @author Dima
@@ -36,7 +38,9 @@ public class LineSegment extends Figure {
      */
     @Override
     public void move(Point value) {
-
+        Point prevStartPoint = location();
+        setCenter(value);
+        setEndPoint(new Point(endPoint.x + value.x - prevStartPoint.x, endPoint.y + value.y - prevStartPoint.y));
     }
 
     /**
@@ -51,6 +55,15 @@ public class LineSegment extends Figure {
 
     @Override
     public Point location() {
-        return null;
+        return getCenter();
+    }
+
+    @Override
+    public boolean contains(Point value) {
+            Point theCenter = location();
+            int a = endPoint.y - theCenter.y;
+            int b = endPoint.x - theCenter.x;
+            double d = (a * value.x - b * value.y + b * theCenter.y - a * theCenter.x) / (sqrt(a * a + b * b));
+            return abs(d) < 1;
     }
 }

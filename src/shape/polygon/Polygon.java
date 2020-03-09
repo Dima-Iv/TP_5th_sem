@@ -26,11 +26,6 @@ public class Polygon extends TwoDFigure {
 
     public Polygon(Color borderColor, Point center, Color bgColor, List<Point> points) {
         super(borderColor, center, bgColor);
-        this.points = points;
-    }
-
-    public Polygon(Color borderColor, Color bgColor, List<Point> points) {
-        super(borderColor, bgColor);
         this.points = new ArrayList<>(points);
     }
 
@@ -112,15 +107,62 @@ public class Polygon extends TwoDFigure {
     }
 
     @Override
-    public Point getCenter() {
-        return super.getCenter();
-    }
+    public boolean contains(Point value) {
+        int hits = 0;
 
-    /**
-     * @param value
-     */
-    @Override
-    public void setCenter(Point value) {
-        super.setCenter(value);
+        int lastx = points.get(points.size() - 1).x;
+        int lasty = points.get(points.size() - 1).y;
+        int curx, cury;
+
+        // Walk the edges of the polygon
+        for (int i = 0; i < points.size(); lastx = curx, lasty = cury, i++) {
+            curx = points.get(i).x;
+            cury = points.get(i).y;
+
+            if (cury == lasty) {
+                continue;
+            }
+
+            int leftx;
+            if (curx < lastx) {
+                if (value.x >= lastx) {
+                    continue;
+                }
+                leftx = curx;
+            } else {
+                if (value.x >= curx) {
+                    continue;
+                }
+                leftx = lastx;
+            }
+
+            double test1, test2;
+            if (cury < lasty) {
+                if (value.y < cury || value.y >= lasty) {
+                    continue;
+                }
+                if (value.x < leftx) {
+                    hits++;
+                    continue;
+                }
+                test1 = value.x - curx;
+                test2 = value.y - cury;
+            } else {
+                if (value.y < lasty || value.y >= cury) {
+                    continue;
+                }
+                if (value.x < leftx) {
+                    hits++;
+                    continue;
+                }
+                test1 = value.x - lastx;
+                test2 = value.y - lasty;
+            }
+
+            if (test1 < (test2 / (lasty - cury) * (lastx - curx))) {
+                hits++;
+            }
+        }
+        return ((hits & 1) != 0);
     }
 }

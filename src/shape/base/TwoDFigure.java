@@ -18,11 +18,6 @@ public abstract class TwoDFigure extends Figure {
         this.bgColor = bgColor;
     }
 
-    public TwoDFigure(Color borderColor, Color bgColor) {
-        super(borderColor);
-        this.bgColor = bgColor;
-    }
-
     public Color getBGColor() {
         return bgColor;
     }

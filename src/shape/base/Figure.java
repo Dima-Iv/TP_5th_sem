@@ -1,5 +1,6 @@
 package shape.base;
 
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import shape.interfaces.Methods;
 
@@ -14,10 +15,6 @@ public abstract class Figure implements Methods {
 
     private Color borderColor;
     private Point center;
-
-    public Figure(Color borderColor) {
-        this.borderColor = borderColor;
-    }
 
     public Figure(Color borderColor, Point center) {
         this.borderColor = borderColor;
@@ -46,4 +43,8 @@ public abstract class Figure implements Methods {
         borderColor = value;
     }
 
+    @Override
+    public void move(Point value) {
+        setCenter(value);
+    }
 }

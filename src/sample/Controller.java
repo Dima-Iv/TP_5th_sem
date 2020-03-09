@@ -14,19 +14,20 @@ import shape.elipse.Circle;
 import shape.elipse.Ellipse;
 import shape.oneD.Line;
 import shape.oneD.LineSegment;
+import shape.oneD.PolyLine;
 import shape.oneD.Ray;
 import shape.polygon.Polygon;
+import shape.polygon.Rectangle;
 import shape.polygon.RegularPolygon;
 import shape.polygon.Rhombus;
 import shape.polygon.Triangle;
 
 import java.awt.*;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.PrimitiveIterator;
-
-import static java.lang.Math.abs;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Controller {
 
@@ -71,12 +72,17 @@ public class Controller {
 
     @FXML
     private TextField numberPointsTextField;
+
     @FXML
     private RadioButton radioButtonRhombus;
+
+    @FXML
+    public RadioButton radioButtonRectangle;
 
     private int n;
     private List<Figure> figures;
     private List<Point> pointList;
+    private List<LineSegment> lineSegments;
     private static final String SEGMENT = "segment";
     private static final String RAY = "ray";
     private static final String LINE = "line";
@@ -87,15 +93,16 @@ public class Controller {
     private static final String ELLIPSE = "ellipse";
     private static final String RHOMBUS = "rhombus";
     private static final String TRIANGLE = "triangle";
+    private static final String RECTANGLE = "rectangle";
     private String figureName;
-    private Point startPoint;
-    private Point endPoint;
     private GraphicsContext graphicsContext;
 
     @FXML
     public void initialize() {
         figures = new ArrayList<>();
         pointList = new ArrayList<>();
+        lineSegments = new ArrayList<>();
+        figureName = SEGMENT;
         initializeRadioButtons();
         initializeCanvas();
         initializeButton();
@@ -124,6 +131,8 @@ public class Controller {
         radioButtonEllipse.setUserData(ELLIPSE);
         radioButtonRhombus.setToggleGroup(toggleGroup);
         radioButtonRhombus.setUserData(RHOMBUS);
+        radioButtonRectangle.setToggleGroup(toggleGroup);
+        radioButtonRectangle.setUserData(RECTANGLE);
 
         toggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             public void changed(ObservableValue<? extends Toggle> ov,
@@ -137,29 +146,32 @@ public class Controller {
 
     public void initializeCanvas() {
         graphicsContext = canvas.getGraphicsContext2D();
-        startPoint = new Point();
-        endPoint = new Point();
-        figureName = SEGMENT;
-
-        canvas.setOnMouseClicked(mouseEvent -> {
-            pointList.add(new Point((int)mouseEvent.getX(), (int)mouseEvent.getY()));
-            drawFigure(false);
-        });
+        AtomicReference<Point> point = new AtomicReference<>(new Point());
 
         canvas.setOnMousePressed(mouseEvent -> {
-            startPoint.setLocation(mouseEvent.getX(), mouseEvent.getY());
+            Point startPoint = new Point((int) mouseEvent.getX(), (int) mouseEvent.getY());
+            point.set(startPoint);
         });
 
+        //TODO
         canvas.setOnMouseDragged(mouseEvent -> {
-            endPoint.setLocation(mouseEvent.getX(), mouseEvent.getY());
-            graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-            drawFigure(true);
+            Point endPoint = new Point((int) mouseEvent.getX(), (int) mouseEvent.getY());
+            boolean endFigureFlag = mouseEvent.isControlDown();
+            boolean moveFlag = mouseEvent.isAltDown();
+            if (!moveFlag) {
+                drawFigure(true, endFigureFlag, false, point.get(), endPoint);
+            }
         });
 
         canvas.setOnMouseReleased(mouseEvent -> {
-            endPoint.setLocation(mouseEvent.getX(), mouseEvent.getY());
-            drawFigure(false);
-            System.out.println(figures);
+            Point endPoint = new Point((int) mouseEvent.getX(), (int) mouseEvent.getY());
+            boolean endFigureFlag = mouseEvent.isControlDown();
+            boolean moveFlag = mouseEvent.isAltDown();
+            if (moveFlag) {
+                drawFigure(true, false, true, point.get(), endPoint);
+            } else {
+                drawFigure(false, endFigureFlag, false, point.get(), endPoint);
+            }
         });
     }
 
@@ -175,85 +187,197 @@ public class Controller {
         });
     }
 
-    public void drawFigure(Boolean dragFlag) {
+    public void repaint() {
+        graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        for (Figure value : figures) {
+            value.draw(graphicsContext);
+        }
+    }
+
+    public void dragRepaint(Figure figure) {
+        graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        figure.draw(graphicsContext);
+        for (Figure value : figures) {
+            value.draw(graphicsContext);
+        }
+        figure.draw(graphicsContext);
+    }
+
+    public void moveFigure(Point startPoint, Point endPoint) {
+        for (int i = figures.size() - 1; i >= 0; i--) {
+            if (figures.get(i).contains(startPoint)) {
+                figures.get(i).move(endPoint);
+                break;
+            }
+        }
+    }
+
+    public void drawFigure(Boolean dragFlag, Boolean endFigureFlag, Boolean moveFlag, Point startPoint, Point endPoint) {
         Color backgroundColor = backgroundColorPicker.getValue();
         Color borderColor = borderColorPicker.getValue();
         switch (figureName) {
             case SEGMENT: {
-                LineSegment lineSegment = new LineSegment(borderColor, startPoint, endPoint);
-                lineSegment.draw(graphicsContext);
-                if(!dragFlag){
-                    figures.add(lineSegment);
+                if (moveFlag) {
+                    moveFigure(startPoint, endPoint);
+                    repaint();
+                } else {
+                    LineSegment lineSegment = new LineSegment(borderColor, startPoint, endPoint);
+                    dragRepaint(lineSegment);
+                    if (!dragFlag) {
+                        figures.add(lineSegment);
+                    }
                 }
                 break;
             }
             case RAY: {
-                Ray ray = new Ray(borderColor, startPoint, endPoint);
-                ray.draw(graphicsContext);
-                if(!dragFlag){
-                    figures.add(ray);
+                if (moveFlag) {
+                    moveFigure(startPoint, endPoint);
+                    repaint();
+                } else {
+                    Ray ray = new Ray(borderColor, startPoint, endPoint);
+                    dragRepaint(ray);
+                    if (!dragFlag) {
+                        figures.add(ray);
+                    }
                 }
                 break;
             }
             case LINE: {
-                Line line = new Line(borderColor, startPoint, endPoint);
-                line.draw(graphicsContext);
-                if(!dragFlag){
-                figures.add(line);
+                if (moveFlag) {
+                    moveFigure(startPoint, endPoint);
+                    repaint();
+                } else {
+                    Line line = new Line(borderColor, startPoint, endPoint);
+                    dragRepaint(line);
+                    if (!dragFlag) {
+                        figures.add(line);
+                    }
                 }
-               break;
-            }
-            case POLYLINE: {
-                //todo
-//                PolyLine polyLine = new PolyLine(borderColor, startPoint, endPoint);
-//                polyLine.draw(graphicsContext);
-                //figures.add(polyLine);
                 break;
             }
+            //TODO
+            /*case POLYLINE: {
+                if (moveFlag) {
+                    moveFigure(startPoint, endPoint);
+                    repaint();
+                } else {
+                    PolyLine polyLine;
+                    LineSegment lineSegment;
+                    if (lineSegments.isEmpty()) {
+                        polyLine = new PolyLine(borderColor, startPoint, lineSegments);
+                        lineSegment = new LineSegment(borderColorPicker.getValue(), startPoint, endPoint);
+                    } else {
+                        polyLine = new PolyLine(borderColor, lineSegments.get(0).getCenter(), lineSegments);
+                        lineSegment = new LineSegment(borderColorPicker.getValue(), lineSegments.get(lineSegments.size() - 1).getEndPoint(), endPoint);
+                    }
+                    lineSegments.add(lineSegment);
+                    polyLine.setLineSegments(lineSegments);
+                    dragRepaint(polyLine);
+                    if (!dragFlag && endFigureFlag) {
+                        figures.add(polyLine);
+                    }
+                }
+                break;
+            }*/
+            //TODO
             case ASYMMETRIC_SHAPE: {
-                Polygon polygon = new Polygon(borderColor, startPoint, backgroundColor, pointList);
-                polygon.draw(graphicsContext);
-                if(!dragFlag) {
-                    figures.add(polygon);
+                if (moveFlag) {
+                    moveFigure(startPoint, endPoint);
+                    repaint();
+                } else {
+                    Polygon polygon;
+                    Point point = new Point(endPoint);
+                    if (pointList.isEmpty()) {
+                        polygon = new Polygon(borderColor, startPoint, backgroundColor);
+
+                    } else {
+                        polygon = new Polygon(borderColor, pointList.get(0), backgroundColor);
+                    }
+                    pointList.add(point);
+                    polygon.setPoints(pointList);
+                    dragRepaint(polygon);
+                    if (!dragFlag && endFigureFlag) {
+                        figures.add(polygon);
+                        pointList.clear();
+                    }
                 }
                 break;
             }
             case REGULAR_SHAPE: {
-                RegularPolygon regularPolygon = new RegularPolygon(borderColor, startPoint, endPoint, backgroundColor, n);
-                regularPolygon.draw(graphicsContext);
-                if(!dragFlag)
-                    figures.add(regularPolygon);
+                if (moveFlag) {
+                    moveFigure(startPoint, endPoint);
+                    repaint();
+                } else {
+                    RegularPolygon regularPolygon = new RegularPolygon(borderColor, startPoint, endPoint, backgroundColor, n);
+                    dragRepaint(regularPolygon);
+                    if (!dragFlag) {
+                        figures.add(regularPolygon);
+                    }
+                }
                 break;
             }
             case CIRCLE: {
-                Circle circle = new Circle(borderColor, startPoint, backgroundColor, endPoint);
-                circle.draw(graphicsContext);
-                if(!dragFlag) {
-                    figures.add(circle);
+                if (moveFlag) {
+                    moveFigure(startPoint, endPoint);
+                    repaint();
+                } else {
+                    Circle circle = new Circle(borderColor, startPoint, backgroundColor, endPoint);
+                    dragRepaint(circle);
+                    if (!dragFlag) {
+                        figures.add(circle);
+                    }
                 }
                 break;
             }
             case ELLIPSE: {
-                Ellipse ellipse = new Ellipse(borderColor, startPoint, backgroundColor, endPoint);
-                ellipse.draw(graphicsContext);
-                if(!dragFlag) {
-                    figures.add(ellipse);
+                if (moveFlag) {
+                    moveFigure(startPoint, endPoint);
+                    repaint();
+                } else {
+                    Ellipse ellipse = new Ellipse(borderColor, startPoint, backgroundColor, endPoint);
+                    dragRepaint(ellipse);
+                    if (!dragFlag) {
+                        figures.add(ellipse);
+                    }
                 }
                 break;
             }
             case RHOMBUS: {
-                Rhombus rhombus = new Rhombus(borderColor, startPoint, backgroundColor, endPoint);
-                rhombus.draw(graphicsContext);
-                if(!dragFlag){
-                figures.add(rhombus);
+                if (moveFlag) {
+                    moveFigure(startPoint, endPoint);
+                    repaint();
+                } else {
+                    Rhombus rhombus = new Rhombus(borderColor, startPoint, backgroundColor, endPoint);
+                    dragRepaint(rhombus);
+                    if (!dragFlag) {
+                        figures.add(rhombus);
+                    }
                 }
                 break;
             }
             case TRIANGLE: {
-                Triangle triangle = new Triangle(borderColor, startPoint, backgroundColor, endPoint);
-                triangle.draw(graphicsContext);
-                if(!dragFlag) {
-                    figures.add(triangle);
+                if (moveFlag) {
+                    moveFigure(startPoint, endPoint);
+                    repaint();
+                } else {
+                    Triangle triangle = new Triangle(borderColor, startPoint, backgroundColor, endPoint);
+                    dragRepaint(triangle);
+                    if (!dragFlag) {
+                        figures.add(triangle);
+                    }
+                }
+                break;
+            }
+            case RECTANGLE: {
+                if (moveFlag) {
+                    moveFigure(startPoint, endPoint);
+                    repaint();
+                } else {
+                    Rectangle rectangle = new Rectangle(borderColor, startPoint, backgroundColor, endPoint);
+                    dragRepaint(rectangle);
+                    if (!dragFlag) {
+                        figures.add(rectangle);
+                    }
                 }
                 break;
             }
