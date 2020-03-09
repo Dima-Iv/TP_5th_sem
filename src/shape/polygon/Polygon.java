@@ -24,11 +24,6 @@ public class Polygon extends TwoDFigure {
         points = new ArrayList<>();
     }
 
-    public Polygon(Color borderColor, Point center, Color bgColor, List<Point> points) {
-        super(borderColor, center, bgColor);
-        this.points = new ArrayList<>(points);
-    }
-
     public List<Point> getPoints() {
         return points;
     }

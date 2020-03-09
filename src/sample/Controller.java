@@ -18,15 +18,11 @@ import shape.oneD.PolyLine;
 import shape.oneD.Ray;
 import shape.polygon.Polygon;
 import shape.polygon.Rectangle;
-import shape.polygon.RegularPolygon;
-import shape.polygon.Rhombus;
-import shape.polygon.Triangle;
+import shape.polygon.*;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Controller {
@@ -80,9 +76,11 @@ public class Controller {
     public RadioButton radioButtonRectangle;
 
     private int n;
+    private int pointCounter = 0;
+    private int lineSegmentCounter = 0;
     private List<Figure> figures;
-    private List<Point> pointList;
-    private List<LineSegment> lineSegments;
+    private List<List<Point>> pointList;
+    private List<List<LineSegment>> lineSegments;
     private static final String SEGMENT = "segment";
     private static final String RAY = "ray";
     private static final String LINE = "line";
@@ -101,11 +99,23 @@ public class Controller {
     public void initialize() {
         figures = new ArrayList<>();
         pointList = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            pointList.add(new ArrayList<>());
+        }
         lineSegments = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            lineSegments.add(new ArrayList<>());
+        }
         figureName = SEGMENT;
         initializeRadioButtons();
         initializeCanvas();
         initializeButton();
+        initializeColorPicker();
+    }
+
+    public void initializeColorPicker() {
+        borderColorPicker.setValue(Color.BLACK);
+        backgroundColorPicker.setValue(Color.WHITE);
     }
 
     public void initializeRadioButtons() {
@@ -146,6 +156,8 @@ public class Controller {
 
     public void initializeCanvas() {
         graphicsContext = canvas.getGraphicsContext2D();
+        graphicsContext.setFill(Color.WHITE);
+        graphicsContext.fillRect(0, 0, canvas.getWidth(), canvas.getWidth());
         AtomicReference<Point> point = new AtomicReference<>(new Point());
 
         canvas.setOnMousePressed(mouseEvent -> {
@@ -153,7 +165,6 @@ public class Controller {
             point.set(startPoint);
         });
 
-        //TODO
         canvas.setOnMouseDragged(mouseEvent -> {
             Point endPoint = new Point((int) mouseEvent.getX(), (int) mouseEvent.getY());
             boolean endFigureFlag = mouseEvent.isControlDown();
@@ -188,15 +199,16 @@ public class Controller {
     }
 
     public void repaint() {
-        graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        graphicsContext.setFill(Color.WHITE);
+        graphicsContext.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         for (Figure value : figures) {
             value.draw(graphicsContext);
         }
     }
 
     public void dragRepaint(Figure figure) {
-        graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        figure.draw(graphicsContext);
+        graphicsContext.setFill(Color.WHITE);
+        graphicsContext.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         for (Figure value : figures) {
             value.draw(graphicsContext);
         }
@@ -255,31 +267,33 @@ public class Controller {
                 }
                 break;
             }
-            //TODO
-            /*case POLYLINE: {
+            case POLYLINE: {
                 if (moveFlag) {
                     moveFigure(startPoint, endPoint);
                     repaint();
                 } else {
                     PolyLine polyLine;
                     LineSegment lineSegment;
-                    if (lineSegments.isEmpty()) {
-                        polyLine = new PolyLine(borderColor, startPoint, lineSegments);
-                        lineSegment = new LineSegment(borderColorPicker.getValue(), startPoint, endPoint);
+                    if (lineSegments.get(lineSegmentCounter).isEmpty()) {
+                        polyLine = new PolyLine(borderColor, startPoint, lineSegments.get(lineSegmentCounter));
+                        lineSegment = new LineSegment(borderColor, startPoint, endPoint);
                     } else {
-                        polyLine = new PolyLine(borderColor, lineSegments.get(0).getCenter(), lineSegments);
-                        lineSegment = new LineSegment(borderColorPicker.getValue(), lineSegments.get(lineSegments.size() - 1).getEndPoint(), endPoint);
+                        polyLine = new PolyLine(borderColor, lineSegments.get(lineSegmentCounter).get(0).getCenter()
+                                , lineSegments.get(lineSegmentCounter));
+                        lineSegment = new LineSegment(borderColor,
+                                lineSegments.get(lineSegmentCounter).get(lineSegments.get(lineSegmentCounter).size() - 1).getEndPoint()
+                                , endPoint);
                     }
-                    lineSegments.add(lineSegment);
-                    polyLine.setLineSegments(lineSegments);
+                    lineSegments.get(lineSegmentCounter).add(lineSegment);
+                    polyLine.setLineSegments(lineSegments.get(lineSegmentCounter));
                     dragRepaint(polyLine);
                     if (!dragFlag && endFigureFlag) {
                         figures.add(polyLine);
+                        lineSegmentCounter++;
                     }
                 }
                 break;
-            }*/
-            //TODO
+            }
             case ASYMMETRIC_SHAPE: {
                 if (moveFlag) {
                     moveFigure(startPoint, endPoint);
@@ -287,18 +301,18 @@ public class Controller {
                 } else {
                     Polygon polygon;
                     Point point = new Point(endPoint);
-                    if (pointList.isEmpty()) {
+                    if (pointList.get(pointCounter).isEmpty()) {
                         polygon = new Polygon(borderColor, startPoint, backgroundColor);
 
                     } else {
-                        polygon = new Polygon(borderColor, pointList.get(0), backgroundColor);
+                        polygon = new Polygon(borderColor, pointList.get(pointCounter).get(0), backgroundColor);
                     }
-                    pointList.add(point);
-                    polygon.setPoints(pointList);
+                    pointList.get(pointCounter).add(point);
+                    polygon.setPoints(pointList.get(pointCounter));
                     dragRepaint(polygon);
                     if (!dragFlag && endFigureFlag) {
                         figures.add(polygon);
-                        pointList.clear();
+                        pointCounter++;
                     }
                 }
                 break;

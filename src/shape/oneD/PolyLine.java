@@ -36,7 +36,10 @@ public class PolyLine extends Figure {
      * @param value
      */
     public void move(Point value) {
-
+        lineSegments.get(0).move(value);
+        for (int i = 1; i < lineSegments.size(); i++) {
+            lineSegments.get(i).move(lineSegments.get(i - 1).getEndPoint());
+        }
     }
 
     /**
@@ -49,11 +52,16 @@ public class PolyLine extends Figure {
 
     @Override
     public Point location() {
-        return null;
+        return lineSegments.get(0).getCenter();
     }
 
     @Override
     public boolean contains(Point value) {
+        for (LineSegment linesegment : lineSegments) {
+            if (linesegment.contains(value)) {
+                return true;
+            }
+        }
         return false;
     }
 }
